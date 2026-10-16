@@ -635,11 +635,12 @@
       // Buat map
       mapInstance = L.map('gpsMap').setView([defaultLat, defaultLng], 13);
       
-      // Tambah tile layer (Jawg Maps - gratis tanpa API key)
-      L.tileLayer('https://{s}.tile.jawg.io/light/{z}/{x}/{y}{r}.png', {
-        attribution: '© Jawg, © OpenStreetMap contributors',
-        maxZoom: 22,
-        className: 'map-tiles'
+      // Tambah tile layer (Stamen Toner Lite - 100% gratis, no API key)
+      L.tileLayer('https://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
+        attribution: '© Stamen Design, © OpenStreetMap contributors',
+        maxZoom: 20,
+        className: 'map-tiles',
+        subdomains: 'abcd'
       }).addTo(mapInstance);
       
       // Buat marker default di Jatirogo
