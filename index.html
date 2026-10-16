@@ -317,6 +317,12 @@
           <option value="POLSEK JATIROGO MELAKSANAKAN SERAH TERIMA TUGAS DAN TANGGUNG JAWAB PENJAGAAN DARI PETUGAS JAGA LAMA KEPADA PETUGAS JAGA BARU DALAM KEADAAN AMAN">13. Serah Terima Tugas Jaga Penjagaan</option>
           <option value="POLSEK JATIROGO MELAKSANAKAN GIAT OPS MIRAS DALAM RANGKA HARKAMTIBMAS DI WILAYAH KEC. JATIROGO">14. Giat Ops Miras dalam rangka Harkamtibmas</option>
           <option value="POLSEK JATIROGO MELAKSANAKAN GIAT JUMLING (JUMAT KELILING) DI MASJID">15. Giat Jumling (Jumat Keliling) di Masjid</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DAN PEMANTAUAN KAMTIBMAS PADA WAKTU SHOLAT SUBUH DI WILAYAH KEC. JATIROGO">16. Patroli / Pemantauan Waktu Sholat Subuh</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DAN PEMANTAUAN KAMTIBMAS PADA WAKTU SHOLAT DZUHUR DI WILAYAH KEC. JATIROGO">17. Patroli / Pemantauan Waktu Sholat Dzuhur</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DAN PEMANTAUAN KAMTIBMAS PADA WAKTU SHOLAT ASHAR DI WILAYAH KEC. JATIROGO">18. Patroli / Pemantauan Waktu Sholat Ashar</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DAN PEMANTAUAN KAMTIBMAS PADA WAKTU SHOLAT MAGHRIB DI WILAYAH KEC. JATIROGO">19. Patroli / Pemantauan Waktu Sholat Maghrib</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DAN PEMANTAUAN KAMTIBMAS PADA WAKTU SHOLAT ISYA DI WILAYAH KEC. JATIROGO">20. Patroli / Pemantauan Waktu Sholat Isya</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PENGAMANAN DAN PEMANTAUAN KEGIATAN MASYARAKAT DI MASJID PADA WAKTU SHOLAT BERJAMAAH DI WILAYAH KEC. JATIROGO">21. Pengamanan Sholat Berjamaah di Masjid</option>
           <option value="CLEAR">-- Ketik Manual Sendiri (Kosongkan) --</option>
         </select>
 
@@ -860,7 +866,8 @@
       ctx.rect(dx, dy, dw, dh);
       ctx.clip();
 
-      let fs = Math.max(10, Math.round(dw * 0.034));
+      // Ukuran font GPS diperkecil agar tidak terlalu mendominasi foto.
+      let fs = Math.max(8, Math.round(dw * 0.025));
       ctx.font = `bold ${fs}px ${GPS_FONT}`;
       const maxW = dw * 0.94;
       const widest = Math.max(...lines.map(t => ctx.measureText(t).width));
@@ -868,8 +875,8 @@
         fs = Math.floor(fs * maxW / widest);
         ctx.font = `bold ${fs}px ${GPS_FONT}`;
       }
-      const lh = Math.round(fs * 1.22);
-      const pad = Math.round(dw * 0.02);
+      const lh = Math.round(fs * 1.16);
+      const pad = Math.max(5, Math.round(dw * 0.014));
 
       const gh = lines.length * lh + pad * 2;
       const g = ctx.createLinearGradient(0, dy + dh - gh, 0, dy + dh);
