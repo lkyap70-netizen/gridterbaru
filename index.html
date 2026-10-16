@@ -153,13 +153,13 @@
       margin-bottom: 0.8rem; border-left: 3px solid #10b981;
     }
 
-    /* ============ PETA GAYA GOOGLE MAPS ============ */
+    /* ============ PETA SATELIT ============ */
     .gmap-wrap {
       position: relative; border-radius: 12px; overflow: hidden;
-      border: 1px solid #475569; margin: 0 0 1rem 0; background: #e5e3df;
+      border: 1px solid #475569; margin: 0 0 1rem 0; background: #1b2a1f;
     }
-    #gpsMap { width: 100%; height: 440px; background: #e5e3df; z-index: 0; }
-    .leaflet-container { font-family: 'Inter', -apple-system, sans-serif; background: #e5e3df; }
+    #gpsMap { width: 100%; height: 440px; background: #1b2a1f; z-index: 0; }
+    .leaflet-container { font-family: 'Inter', -apple-system, sans-serif; background: #1b2a1f; }
 
     /* Kotak pencarian melayang */
     .gm-search {
@@ -196,6 +196,10 @@
     .search-item .pin { flex: none; margin-top: 2px; }
     .search-item strong { display: block; font-weight: 600; }
     .search-item small { color: #70757a; font-size: .74rem; line-height: 1.3; display: block; }
+    .search-item .badge {
+      display: inline-block; background: #e6f4ea; color: #137333; font-size: .62rem; font-weight: 700;
+      padding: 1px 6px; border-radius: 10px; margin-left: 6px; vertical-align: middle;
+    }
     .search-loading { padding: 12px 14px; color: #70757a; font-size: .8rem; }
 
     /* Tombol di kanan bawah (zoom + lokasi saya) */
@@ -216,23 +220,9 @@
     .gm-btn.busy svg { animation: gmspin 1s linear infinite; }
     @keyframes gmspin { to { transform: rotate(360deg); } }
 
-    /* Tombol lapisan (Peta / Satelit) kiri bawah */
-    .gm-layer {
-      position: absolute; left: 10px; bottom: 28px; z-index: 1000;
-      width: 64px; height: 64px; border-radius: 8px; border: 2px solid #fff; cursor: pointer;
-      box-shadow: 0 2px 6px rgba(60,64,67,.4); overflow: hidden; padding: 0; background: #ccc;
-    }
-    .gm-layer .thumb { position: absolute; inset: 0; background-size: cover; background-position: center; }
-    .gm-layer .thumb.sat { background: linear-gradient(135deg, #2d4a2b 0%, #4f6b3a 40%, #2b4a63 100%); }
-    .gm-layer .thumb.map { background: linear-gradient(135deg, #e8eaed 0%, #c8e6c9 45%, #aadaff 100%); }
-    .gm-layer .lbl {
-      position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 0; text-align: center;
-      font-size: .66rem; font-weight: 700; color: #fff; background: rgba(0,0,0,.55);
-    }
-
     /* Kartu info koordinat bawah */
     .gm-card {
-      position: absolute; left: 84px; right: 62px; bottom: 28px; z-index: 1000;
+      position: absolute; left: 10px; right: 62px; bottom: 28px; z-index: 1000;
       background: #fff; border-radius: 10px; padding: 8px 12px; color: #202124;
       box-shadow: 0 2px 6px rgba(60,64,67,.3); font-size: .74rem; line-height: 1.35;
       display: none; min-height: 40px;
@@ -297,20 +287,6 @@
         </div>
       </div>
 
-      <!-- TATA LETAK DOMINAN -->
-      <div class="form-group">
-        <div class="form-label">
-          <span>Tata Letak Dominan</span>
-          <span class="hint">Pilih susunan tata letak</span>
-        </div>
-        <select id="layoutSelector" style="margin-bottom: 0;">
-          <option value="auto" selected>Otomatis (Sesuai Jumlah Foto)</option>
-          <option value="top">Dominan Atas (Foto 1 Besar di Atas)</option>
-          <option value="bottom">Dominan Bawah (Foto Besar di Bawah)</option>
-          <option value="equal">Bagi Rata (Grid Seimbang)</option>
-        </select>
-      </div>
-
       <!-- KETERANGAN KEGIATAN -->
       <div class="form-group">
         <div class="form-label">
@@ -357,7 +333,7 @@
 
         <label class="gps-check"><input type="checkbox" id="gpsOn" checked> Tampilkan keterangan GPS di pojok kanan bawah tiap foto</label>
 
-        <div class="map-hint">💡 Peta dibatasi wilayah Kabupaten Tuban. Cari lokasi, klik peta, atau tekan tombol target untuk memakai lokasi Anda.</div>
+        <div class="map-hint">💡 Peta satelit dibatasi wilayah Kabupaten Tuban. Hasil pencarian diprioritaskan untuk Kecamatan Jatirogo. Cari lokasi, klik peta, atau tekan tombol target untuk memakai lokasi Anda.</div>
 
         <div class="gmap-wrap">
           <div id="gpsMap"></div>
@@ -365,18 +341,13 @@
           <div class="gm-search" id="gmSearch">
             <div class="gm-search-bar">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#5f6368"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-              <input type="text" id="mapSearchBox" placeholder="Cari di Kabupaten Tuban" autocomplete="off" />
+              <input type="text" id="mapSearchBox" placeholder="Cari di Jatirogo / Kabupaten Tuban" autocomplete="off" />
               <button type="button" class="gm-clear" id="gmClear" aria-label="Hapus">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
               </button>
             </div>
             <div class="search-results" id="searchResults"></div>
           </div>
-
-          <button type="button" class="gm-layer" id="gmLayerBtn" aria-label="Ganti tampilan peta">
-            <div class="thumb sat" id="gmLayerThumb"></div>
-            <div class="lbl" id="gmLayerLbl">Satelit</div>
-          </button>
 
           <div class="gm-card" id="mapInfoBox">
             <div class="t" id="mapPlace">Lokasi dipilih</div>
@@ -400,29 +371,11 @@
           <input type="text" id="gpsLngAll" inputmode="decimal" placeholder="Longitude semua foto" />
         </div>
 
-        <div class="form-label" style="margin-top:.6rem"><span>Template Jam Otomatis</span><span class="hint">Mengikuti lokasi Jatirogo</span></div>
-        <select id="jamTemplate">
-          <option value="" selected disabled>-- Pilih template jam --</option>
-          <option value="subuh">Jam Subuh</option>
-          <option value="jumat">Jam Sholat Jumat</option>
-          <option value="dzuhur">Jam Dzuhur</option>
-          <option value="ashar">Jam Ashar</option>
-          <option value="maghrib">Jam Maghrib</option>
-          <option value="isya">Jam Isya</option>
-          <option value="now">Jam Sekarang</option>
-        </select>
-        <div class="gps-2">
-          <input type="text" id="jamOffset" inputmode="numeric" value="0" placeholder="Geser menit (mis. -30)" />
-          <input type="text" id="jamStep" inputmode="numeric" value="0" placeholder="Selisih antar foto (menit)" />
-        </div>
-        <div class="gps-sub" id="jamInfo">Geser menit: -30 berarti 30 menit sebelum waktu sholat. Jadwal dihitung dari tanggal kegiatan dan koordinat (kosong = Jatirogo).</div>
-
         <div class="gps-sub">Per foto: jam (contoh 10.09, kosong = jam saat dibuat) dan koordinat (kosong = pakai koordinat semua foto).</div>
         <div class="gps-row"><b>Foto 1</b><input type="text" id="gpsJam1" placeholder="Jam" /><input type="text" id="gpsLat1" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng1" inputmode="decimal" placeholder="Long" /></div>
         <div class="gps-row"><b>Foto 2</b><input type="text" id="gpsJam2" placeholder="Jam" /><input type="text" id="gpsLat2" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng2" inputmode="decimal" placeholder="Long" /></div>
         <div class="gps-row"><b>Foto 3</b><input type="text" id="gpsJam3" placeholder="Jam" /><input type="text" id="gpsLat3" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng3" inputmode="decimal" placeholder="Long" /></div>
         <div class="gps-row"><b>Foto 4</b><input type="text" id="gpsJam4" placeholder="Jam" /><input type="text" id="gpsLat4" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng4" inputmode="decimal" placeholder="Long" /></div>
-        <button type="button" class="btn-today" style="padding:.6rem .85rem;margin-top:.2rem" onclick="setJamSekarang()">Isi Jam Sekarang (semua foto)</button>
       </div>
 
       <button class="btn-generate" id="generateBtn">⚡ Buat Dokumentasi</button>
@@ -449,17 +402,18 @@
 
   <script>
     // =====================================================
-    //  PETA GAYA GOOGLE MAPS - DIBATASI KABUPATEN TUBAN
+    //  PETA SATELIT - DIBATASI KABUPATEN TUBAN
     // =====================================================
     // Perkiraan kotak batas Kabupaten Tuban (LS 6°40'-7°18', BT 111°30'-112°35')
     const TUBAN_BOUNDS = L.latLngBounds([-7.30, 111.50], [-6.65, 112.60]);
+    // Pusat pencarian prioritas: Kecamatan Jatirogo
     const defaultLat = -6.76;  // perkiraan Jatirogo; klik peta untuk menyesuaikan
     const defaultLng = 111.92;
+    // Kotak prioritas Kecamatan Jatirogo (kiri, atas, kanan, bawah) untuk Nominatim viewbox
+    const JATIROGO_VIEWBOX = '111.78,-6.60,112.06,-6.92';
 
     let mapInstance = null;
     let mapMarker = null;
-    let baseLayers = {};
-    let currentBase = "map";
 
     const PIN_SVG = '<svg class="gm-pin gm-pin-drop" width="32" height="44" viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg">' +
       '<path d="M16 0C7.2 0 0 7 0 15.7 0 27.5 16 44 16 44s16-16.5 16-28.3C32 7 24.8 0 16 0z" fill="#EA4335"/>' +
@@ -480,31 +434,22 @@
         maxBoundsViscosity: 1.0,
         minZoom: 9,
         maxZoom: 19
-      }).setView([defaultLat, defaultLng], 12);
+      }).setView([defaultLat, defaultLng], 14);
 
       mapInstance.attributionControl.setPrefix(false);
 
-      // Peta jalan (bergaya Google Maps) - CARTO Voyager, gratis tanpa API key
-      const voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        attribution: '© OpenStreetMap © CARTO',
-        subdomains: 'abcd',
-        maxZoom: 19
-      });
-
-      // Satelit + label
-      const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      // Hanya tampilan satelit (Esri World Imagery) + label nama tempat
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles © Esri',
         maxZoom: 19
-      });
-      const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
+      }).addTo(mapInstance);
+
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
         subdomains: 'abcd',
         maxZoom: 19,
         pane: 'overlayPane'
-      });
-
-      baseLayers.map = L.layerGroup([voyager]);
-      baseLayers.sat = L.layerGroup([satellite, labels]);
-      baseLayers.map.addTo(mapInstance);
+      }).addTo(mapInstance);
 
       // Kontrol zoom + tombol lokasi saya (kanan bawah)
       L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
@@ -553,11 +498,6 @@
         pickLocation(e.latlng.lat, e.latlng.lng, false);
       });
 
-      // Ganti lapisan Peta / Satelit
-      const layerBtn = document.getElementById('gmLayerBtn');
-      L.DomEvent.disableClickPropagation(layerBtn);
-      layerBtn.addEventListener('click', toggleBase);
-
       // Cegah klik di kotak pencarian menggeser peta
       L.DomEvent.disableClickPropagation(document.getElementById('gmSearch'));
       L.DomEvent.disableScrollPropagation(document.getElementById('searchResults'));
@@ -566,24 +506,6 @@
 
       setTimeout(() => mapInstance.invalidateSize(), 300);
       window.addEventListener('resize', () => mapInstance && mapInstance.invalidateSize());
-    }
-
-    function toggleBase() {
-      const thumb = document.getElementById('gmLayerThumb');
-      const lbl = document.getElementById('gmLayerLbl');
-      if (currentBase === 'map') {
-        mapInstance.removeLayer(baseLayers.map);
-        baseLayers.sat.addTo(mapInstance);
-        currentBase = 'sat';
-        thumb.className = 'thumb map';
-        lbl.textContent = 'Peta';
-      } else {
-        mapInstance.removeLayer(baseLayers.sat);
-        baseLayers.map.addTo(mapInstance);
-        currentBase = 'map';
-        thumb.className = 'thumb sat';
-        lbl.textContent = 'Satelit';
-      }
     }
 
     function showInfo(title, lat, lng) {
@@ -602,15 +524,10 @@
       document.getElementById('gpsCoordOn').checked = true;
 
       mapMarker.setLatLng([lat, lng]);
-      if (recenter) mapInstance.setView([lat, lng], Math.max(mapInstance.getZoom(), 15));
+      if (recenter) mapInstance.setView([lat, lng], Math.max(mapInstance.getZoom(), 16));
       else mapInstance.panTo([lat, lng]);
 
       showInfo(title || 'Memuat nama lokasi...', lat, lng);
-
-      // Hitung ulang template jam (jika dipilih)
-      document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
-      document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
-
       reverseGeocode(lat, lng, title);
     }
 
@@ -676,8 +593,9 @@
       }
     }
 
-    // --- PENCARIAN LOKASI (terbatas Kabupaten Tuban) ---
+    // --- PENCARIAN LOKASI (prioritas Kec. Jatirogo, lalu Kabupaten Tuban) ---
     let searchTimeout;
+    let searchToken = 0;
     const searchBox = document.getElementById('mapSearchBox');
     const searchResults = document.getElementById('searchResults');
     const gmClear = document.getElementById('gmClear');
@@ -706,32 +624,62 @@
       searchBox.focus();
     });
 
-    function searchLocations(query) {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&accept-language=id&viewbox=111.50,-6.65,112.60,-7.30&bounded=1&q=${encodeURIComponent(query)}&limit=8`;
+    function nominatimSearch(query, viewbox) {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&accept-language=id&viewbox=${viewbox}&bounded=1&q=${encodeURIComponent(query)}&limit=8`;
+      return fetch(url).then(r => r.json()).catch(() => []);
+    }
 
-      fetch(url)
-        .then(r => r.json())
-        .then(data => {
-          const hasil = data.filter(it => inTuban(parseFloat(it.lat), parseFloat(it.lon)));
-          if (hasil.length === 0) {
-            searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil di Kabupaten Tuban</div>';
-            return;
-          }
-          searchResults.innerHTML = '';
-          hasil.forEach(item => {
-            const parts = (item.display_name || '').split(',');
-            const title = item.name || parts[0];
-            const rest = parts.slice(1, 4).join(',').trim();
-            const div = document.createElement('div');
-            div.className = 'search-item';
-            div.innerHTML = `${PIN_SMALL}<div><strong>${escapeHtml(title)}</strong><small>${escapeHtml(rest)}</small></div>`;
-            div.addEventListener('click', () => selectSearchResult(item, title));
-            searchResults.appendChild(div);
-          });
-        })
-        .catch(() => {
-          searchResults.innerHTML = '<div class="search-loading">Gagal mencari. Periksa koneksi internet.</div>';
+    function jarakKeJatirogo(item) {
+      const dy = parseFloat(item.lat) - defaultLat;
+      const dx = parseFloat(item.lon) - defaultLng;
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+
+    function searchLocations(query) {
+      const token = ++searchToken;
+
+      // Dua pencarian paralel: 1) khusus area Jatirogo, 2) seluruh Kabupaten Tuban
+      Promise.all([
+        nominatimSearch(query, JATIROGO_VIEWBOX),
+        nominatimSearch(query, '111.50,-6.65,112.60,-7.30')
+      ]).then(([dataJat, dataTuban]) => {
+        if (token !== searchToken) return;
+
+        const seen = new Set();
+        const hasil = [];
+
+        // Hasil area Jatirogo lebih dulu, diurutkan dari yang terdekat ke pusat Jatirogo
+        dataJat
+          .filter(it => inTuban(parseFloat(it.lat), parseFloat(it.lon)))
+          .sort((a, b) => jarakKeJatirogo(a) - jarakKeJatirogo(b))
+          .forEach(it => { seen.add(it.place_id); hasil.push({ item: it, prioritas: true }); });
+
+        // Sisanya: hasil lain di Kabupaten Tuban, urut dari yang terdekat ke Jatirogo
+        dataTuban
+          .filter(it => !seen.has(it.place_id) && inTuban(parseFloat(it.lat), parseFloat(it.lon)))
+          .sort((a, b) => jarakKeJatirogo(a) - jarakKeJatirogo(b))
+          .forEach(it => { seen.add(it.place_id); hasil.push({ item: it, prioritas: false }); });
+
+        if (hasil.length === 0) {
+          searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil di Kabupaten Tuban</div>';
+          return;
+        }
+
+        searchResults.innerHTML = '';
+        hasil.slice(0, 10).forEach(({ item, prioritas }) => {
+          const parts = (item.display_name || '').split(',');
+          const title = item.name || parts[0];
+          const rest = parts.slice(1, 4).join(',').trim();
+          const div = document.createElement('div');
+          div.className = 'search-item';
+          div.innerHTML = `${PIN_SMALL}<div><strong>${escapeHtml(title)}${prioritas ? '<span class="badge">Jatirogo</span>' : ''}</strong><small>${escapeHtml(rest)}</small></div>`;
+          div.addEventListener('click', () => selectSearchResult(item, title));
+          searchResults.appendChild(div);
         });
+      }).catch(() => {
+        if (token !== searchToken) return;
+        searchResults.innerHTML = '<div class="search-loading">Gagal mencari. Periksa koneksi internet.</div>';
+      });
     }
 
     function selectSearchResult(item, title) {
@@ -756,7 +704,6 @@
     const btnDownloadLink = document.getElementById("btnDownloadLink");
     const frameStatusText = document.getElementById("frameStatusText");
     const savedFramePicker = document.getElementById("savedFramePicker");
-    const layoutSelector = document.getElementById("layoutSelector");
     const templateSelector = document.getElementById("templateSelector");
     const deskripsiTextarea = document.getElementById("deskripsi");
 
@@ -896,100 +843,6 @@
       return p.length >= 2 ? `${pad2(p[0])}.${pad2(p[1])}` : String(s);
     }
 
-    // --- JADWAL SHOLAT (metode Kemenag RI: Subuh 20 derajat, Isya 18 derajat, ihtiyath +2 menit) ---
-    const JATIROGO = { lat: -6.76, lng: 111.92 };
-    const BULAN = { januari:1, februari:2, maret:3, april:4, mei:5, juni:6, juli:7, agustus:8, september:9, oktober:10, november:11, desember:12,
-                    jan:1, feb:2, mar:3, apr:4, jun:6, jul:7, agu:8, agt:8, sep:9, okt:10, nov:11, des:12 };
-
-    function julianDay(y, m, d) {
-      if (m <= 2) { y -= 1; m += 12; }
-      const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4);
-      return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5;
-    }
-
-    function prayerTimes(y, m, d, lat, lng, tz) {
-      const R = Math.PI / 180;
-      const fixA = (a) => { a = a - 360 * Math.floor(a / 360); return a; };
-      const fixH = (h) => { h = h - 24 * Math.floor(h / 24); return h; };
-      const sin = (x) => Math.sin(x * R), cos = (x) => Math.cos(x * R), tan = (x) => Math.tan(x * R);
-      const jd0 = julianDay(y, m, d) - lng / 360;
-
-      function sun(jd) {
-        const D = jd - 2451545.0;
-        const g = fixA(357.529 + 0.98560028 * D);
-        const q = fixA(280.459 + 0.98564736 * D);
-        const L = fixA(q + 1.915 * sin(g) + 0.020 * sin(2 * g));
-        const e = 23.439 - 0.00000036 * D;
-        const RA = fixH(Math.atan2(cos(e) * sin(L), cos(L)) / R / 15);
-        return { decl: Math.asin(sin(e) * sin(L)) / R, eqt: q / 15 - RA };
-      }
-      const mid = (t) => fixH(12 - sun(jd0 + t).eqt);
-      function atAngle(angle, t, ccw) {
-        const decl = sun(jd0 + t).decl, noon = mid(t);
-        const v = (-sin(angle) - sin(decl) * sin(lat)) / (cos(decl) * cos(lat));
-        const dt = Math.acos(Math.max(-1, Math.min(1, v))) / R / 15;
-        return noon + (ccw ? -dt : dt);
-      }
-      function asr(t) {
-        const decl = sun(jd0 + t).decl;
-        const ang = -Math.atan(1 / (1 + tan(Math.abs(lat - decl)))) / R;
-        return atAngle(ang, t, false);
-      }
-      const adj = tz - lng / 15;
-      const T = {
-        subuh: atAngle(20, 5 / 24, true),
-        dzuhur: mid(12 / 24),
-        ashar: asr(13 / 24),
-        maghrib: atAngle(0.833, 18 / 24, false),
-        isya: atAngle(18, 18 / 24, false)
-      };
-      const out = {};
-      for (const k in T) out[k] = Math.ceil((T[k] + adj) * 60 + 2 - 1e-9);
-      out.jumat = out.dzuhur;
-      return out;
-    }
-
-    function fmtMenit(total) {
-      total = ((Math.round(total) % 1440) + 1440) % 1440;
-      return `${pad2(Math.floor(total / 60))}.${pad2(total % 60)}`;
-    }
-
-    function tanggalDipakai() {
-      const txt = document.getElementById("tanggal").value;
-      const m = txt.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
-      if (m && BULAN[m[2].toLowerCase()]) return { y: +m[3], m: BULAN[m[2].toLowerCase()], d: +m[1] };
-      const n = new Date();
-      return { y: n.getFullYear(), m: n.getMonth() + 1, d: n.getDate() };
-    }
-
-    function applyJamTemplate() {
-      const key = document.getElementById("jamTemplate").value;
-      const info = document.getElementById("jamInfo");
-      if (!key) return;
-      const tzMap = { WIB: 7, WITA: 8, WIT: 9 };
-      const tz = tzMap[document.getElementById("gpsTz").value] || 7;
-      const lat = parseCoord(document.getElementById("gpsLatAll").value);
-      const lng = parseCoord(document.getElementById("gpsLngAll").value);
-      const L_ = (lat !== null && lng !== null) ? { lat, lng } : JATIROGO;
-      const t = tanggalDipakai();
-      const pt = prayerTimes(t.y, t.m, t.d, L_.lat, L_.lng, tz);
-      const off = parseInt(document.getElementById("jamOffset").value) || 0;
-      const step = parseInt(document.getElementById("jamStep").value) || 0;
-
-      let base;
-      if (key === "now") { const n = new Date(); base = n.getHours() * 60 + n.getMinutes(); }
-      else base = pt[key];
-
-      [1, 2, 3, 4].forEach((i) => {
-        document.getElementById(`gpsJam${i}`).value = fmtMenit(base + off + (i - 1) * step);
-      });
-      info.textContent = `Jadwal ${pad2(t.d)}/${pad2(t.m)}/${t.y}: Subuh ${fmtMenit(pt.subuh)} - Dzuhur/Jumat ${fmtMenit(pt.dzuhur)} - Ashar ${fmtMenit(pt.ashar)} - Maghrib ${fmtMenit(pt.maghrib)} - Isya ${fmtMenit(pt.isya)}`;
-    }
-
-    function setJamSekarang() {
-      [1, 2, 3, 4].forEach(i => { document.getElementById(`gpsJam${i}`).value = nowTime(); });
-    }
-
     function parseCoord(v) {
       const n = parseFloat(String(v || "").trim().replace(",", "."));
       return isFinite(n) ? n : null;
@@ -1051,69 +904,32 @@
       ctx.restore();
     }
 
-    function renderPhotoGrid(ctx, photos, mode, x, y, w, h, gap) {
+    // Tata letak otomatis menyesuaikan jumlah foto
+    function renderPhotoGrid(ctx, photos, x, y, w, h, gap) {
       const total = photos.length;
       if (total === 0) return;
-
-      if (mode === "auto") {
-        if (total === 1) mode = "equal";
-        else if (total === 2) mode = "equal";
-        else if (total === 3) mode = "top";
-        else mode = "equal";
-      }
 
       if (total === 1) {
         drawCoverImage(ctx, photos[0], x, y, w, h);
       } else if (total === 2) {
-        if (mode === "equal") {
-          const colW = (w - gap) / 2;
-          drawCoverImage(ctx, photos[0], x, y, colW, h);
-          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, h);
-        } else {
-          const rowH = (h - gap) / 2;
-          drawCoverImage(ctx, photos[0], x, y, w, rowH);
-          drawCoverImage(ctx, photos[1], x, y + rowH + gap, w, rowH);
-        }
+        const colW = (w - gap) / 2;
+        drawCoverImage(ctx, photos[0], x, y, colW, h);
+        drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, h);
       } else if (total === 3) {
+        // Foto 1 besar di atas, foto 2 & 3 di bawah
         const rowH = (h - gap) / 2;
         const colW = (w - gap) / 2;
-
-        if (mode === "top") {
-          drawCoverImage(ctx, photos[0], x, y, w, rowH);
-          drawCoverImage(ctx, photos[1], x, y + rowH + gap, colW, rowH);
-          drawCoverImage(ctx, photos[2], x + colW + gap, y + rowH + gap, colW, rowH);
-        } else if (mode === "bottom") {
-          drawCoverImage(ctx, photos[0], x, y, colW, rowH);
-          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, rowH);
-          drawCoverImage(ctx, photos[2], x, y + rowH + gap, w, rowH);
-        } else {
-          const colW3 = (w - (gap * 2)) / 3;
-          drawCoverImage(ctx, photos[0], x, y, colW3, h);
-          drawCoverImage(ctx, photos[1], x + colW3 + gap, y, colW3, h);
-          drawCoverImage(ctx, photos[2], x + (colW3 * 2) + (gap * 2), y, colW3, h);
-        }
-      } else if (total >= 4) {
+        drawCoverImage(ctx, photos[0], x, y, w, rowH);
+        drawCoverImage(ctx, photos[1], x, y + rowH + gap, colW, rowH);
+        drawCoverImage(ctx, photos[2], x + colW + gap, y + rowH + gap, colW, rowH);
+      } else {
+        // 4 foto: grid seimbang 2x2
         const rowH = (h - gap) / 2;
         const colW = (w - gap) / 2;
-
-        if (mode === "top") {
-          const subColW = (w - (gap * 2)) / 3;
-          drawCoverImage(ctx, photos[0], x, y, w, rowH);
-          drawCoverImage(ctx, photos[1], x, y + rowH + gap, subColW, rowH);
-          drawCoverImage(ctx, photos[2], x + subColW + gap, y + rowH + gap, subColW, rowH);
-          drawCoverImage(ctx, photos[3], x + (subColW * 2) + (gap * 2), y + rowH + gap, subColW, rowH);
-        } else if (mode === "bottom") {
-          const subColW = (w - (gap * 2)) / 3;
-          drawCoverImage(ctx, photos[0], x, y, subColW, rowH);
-          drawCoverImage(ctx, photos[1], x + subColW + gap, y, subColW, rowH);
-          drawCoverImage(ctx, photos[2], x + (subColW * 2) + (gap * 2), y, subColW, rowH);
-          drawCoverImage(ctx, photos[3], x, y + rowH + gap, w, rowH);
-        } else {
-          drawCoverImage(ctx, photos[0], x, y, colW, rowH);
-          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, rowH);
-          drawCoverImage(ctx, photos[2], x, y + rowH + gap, colW, rowH);
-          drawCoverImage(ctx, photos[3], x + colW + gap, y + rowH + gap, colW, rowH);
-        }
+        drawCoverImage(ctx, photos[0], x, y, colW, rowH);
+        drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, rowH);
+        drawCoverImage(ctx, photos[2], x, y + rowH + gap, colW, rowH);
+        drawCoverImage(ctx, photos[3], x + colW + gap, y + rowH + gap, colW, rowH);
       }
     }
 
@@ -1182,7 +998,6 @@
 
       const deskripsiText = document.getElementById("deskripsi").value;
       const tanggalText = document.getElementById("tanggal").value;
-      const layoutMode = layoutSelector.value;
 
       const [frameImg, img1, img2, img3, img4] = await Promise.all([
         loadFrame(),
@@ -1223,7 +1038,7 @@
       ctx.clip();
 
       const activePhotos = [img1, img2, img3, img4].filter(img => img !== null);
-      renderPhotoGrid(ctx, activePhotos, layoutMode, contentX, contentY, contentW, contentH, gap);
+      renderPhotoGrid(ctx, activePhotos, contentX, contentY, contentW, contentH, gap);
       ctx.restore();
 
       if (deskripsiText.trim()) {
@@ -1268,15 +1083,6 @@
         previewContainer.scrollIntoView({ behavior: "smooth" });
       }, "image/png");
     });
-
-    // Template jam otomatis: hitung ulang saat tanggal / koordinat / zona waktu berubah
-    ["jamTemplate", "jamOffset", "jamStep", "tanggal", "gpsLatAll", "gpsLngAll", "gpsTz"].forEach((id) => {
-      const el = document.getElementById(id);
-      el.addEventListener("input", applyJamTemplate);
-      el.addEventListener("change", applyJamTemplate);
-    });
-    const _setToday = setTodayDate;
-    setTodayDate = function () { _setToday(); applyJamTemplate(); };
   </script>
 </body>
 </html>
