@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>POLSEK JATIROGO - Generator Dokumentasi</title>
+  
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      padding: 1rem 0.85rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app-container {
+      width: 100%;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      padding: 0 0 1.25rem;
+    }
+
+    .header-badge {
+      display: inline-block;
+      background-color: rgba(225, 29, 72, 0.15);
+      color: #fb7185;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      margin-bottom: 0.4rem;
+      text-transform: uppercase;
+    }
+
+    .header h1 {
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #ffffff;
+      line-height: 1.2;
+    }
+
+    .header h2 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #cbd5e1;
+      margin-top: 0.15rem;
+      letter-spacing: 1px;
+    }
+
+    .frame-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1e293b;
+      padding: 0.65rem 0.85rem;
+      border-radius: 10px;
+      margin-bottom: 1.2rem;
+      border: 1px solid #334155;
+      font-size: 0.8rem;
+    }
+
+    .frame-bar span {
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    .btn-small {
+      background: #334155;
+      color: #f8fafc;
+      border: none;
+      padding: 0.35rem 0.65rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 1.2rem;
+      border: 1px solid #334155;
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.15rem;
+    }
+
+    .form-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-label span.hint {
+      font-size: 0.75rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.65rem;
+    }
+
+    .photo-btn {
+      position: relative;
+      background: #0f172a;
+      border: 1.5px dashed #475569;
+      border-radius: 10px;
+      padding: 0.85rem 0.5rem;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .photo-btn.active {
+      border-style: solid;
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.08);
+    }
+
+    .photo-btn input[type="file"] {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      cursor: pointer;
+      width: 100%;
+      height: 100%;
+    }
+
+    .photo-btn .title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 0.15rem;
+    }
+
+    .photo-btn .status {
+      font-size: 0.7rem;
+      color: #94a3b8;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 90%;
+    }
+
+    .photo-btn.active .title {
+      color: #10b981;
+    }
+
+    .photo-btn.active .status {
+      color: #34d399;
+      font-weight: 600;
+    }
+
+    select, textarea, input[type="text"] {
+      width: 100%;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      padding: 0.75rem 0.85rem;
+      font-size: 0.85rem;
+      color: #ffffff;
+      outline: none;
+    }
+
+    select {
+      margin-bottom: 0.65rem;
+      cursor: pointer;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+      background-repeat: no-repeat;
+      background-position: right 0.85rem center;
+      background-size: 1em;
+    }
+
+    select option {
+      background: #0f172a;
+      color: #f8fafc;
+    }
+
+    select:focus, textarea:focus, input[type="text"]:focus {
+      border-color: #e11d48;
+    }
+
+    textarea::placeholder, input[type="text"]::placeholder {
+      color: #64748b;
+      font-size: 0.82rem;
+    }
+
+    .date-row {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .date-row input {
+      flex: 1;
+    }
+
+    .btn-today {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      padding: 0 0.85rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-generate {
+      width: 100%;
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 0.95rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
+    }
+
+    .btn-generate:active {
+      background: #be123c;
+      transform: scale(0.98);
+    }
+
+    .preview-card {
+      background: #1e293b;
+      border-radius: 14px;
+      padding: 1.2rem;
+      border: 1px solid #334155;
+      text-align: center;
+      display: none;
+      margin-bottom: 1.5rem;
+    }
+
+    .preview-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #94a3b8;
+      margin-bottom: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #resultImage {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      border: 2px solid #475569;
+      margin-bottom: 1rem;
+      display: block;
+    }
+
+    #outputCanvas {
+      display: none;
+    }
+
+    .btn-download-direct {
+      width: 100%;
+      background: #10b981;
+      color: #ffffff;
+      padding: 0.95rem;
+      font-size: 0.95rem;
+      font-weight: 700;
+      border-radius: 10px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      border: none;
+    }
+
+    .btn-download-direct:active {
+      background: #059669;
+    }
+
+    .footer-copyright {
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      font-size: 0.75rem;
+      color: #64748b;
+      letter-spacing: 0.3px;
+    }
+
+    .footer-copyright .author {
+      color: #94a3b8;
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    /* --- KETERANGAN GPS --- */
+    .gps-check{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:#e2e8f0;margin-bottom:.6rem;cursor:pointer}
+    .gps-check input{width:1.05rem;height:1.05rem;accent-color:#e11d48}
+    .gps-sub{font-size:.72rem;color:#94a3b8;margin:.2rem 0 .4rem}
+    .gps-row{display:grid;grid-template-columns:2.4rem 1.25fr 1fr 1fr;gap:.4rem;align-items:center;margin-bottom:.4rem}
+    .gps-row b{font-size:.74rem;color:#cbd5e1}
+    .gps-row input[type="text"]{padding:.55rem .5rem;font-size:.76rem}
+    .gps-2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+    .gps-2 input{margin-bottom:.5rem}
+    
+    /* --- MAP STYLING --- */
+    .gps-map-container {
+      background: #0f172a;
+      border: 1.5px solid #475569;
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 0.8rem 0 1rem 0;
+      position: relative;
+    }
+    
+    #gpsMap {
+      width: 100%;
+      height: 350px;
+      border-radius: 8px;
+    }
+    
+    .map-info-box {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid #475569;
+      border-radius: 8px;
+      padding: 0.8rem;
+      font-size: 0.75rem;
+      color: #e2e8f0;
+      max-width: 180px;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+    }
+    
+    .map-info-box div {
+      margin: 0.3rem 0;
+      word-break: break-all;
+    }
+    
+    .map-info-label {
+      color: #94a3b8;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .map-info-value {
+      color: #10b981;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+    
+    .map-hint {
+      font-size: 0.75rem;
+      color: #64748b;
+      font-style: italic;
+      padding: 0.6rem 0;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 0.6rem;
+      border-radius: 6px;
+      margin-bottom: 0.8rem;
+      border-left: 3px solid #10b981;
+    }
+    
+    .leaflet-container {
+      background: #1e293b;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    
+    .leaflet-control-attribution {
+      background: rgba(30, 41, 59, 0.8) !important;
+      color: #94a3b8 !important;
+    }
+  </style>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <style>
+    .leaflet-control-zoom-in, .leaflet-control-zoom-out {
+      background-color: #1e293b !important;
+      color: #f8fafc !important;
+      border: 1px solid #475569 !important;
+    }
+    .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover {
+      background-color: #334155 !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    
+    <header class="header">
+      <div class="header-badge">Humas Presisi</div>
+      <h1>POLSEK JATIROGO</h1>
+      <h2>POLRESTA TUBAN</h2>
+    </header>
+
+    <div class="frame-bar">
+      <span id="frameStatusText">Memeriksa template...</span>
+      <input type="file" id="savedFramePicker" accept="image/*" style="display: none;" />
+      <button type="button" class="btn-small" onclick="document.getElementById('savedFramePicker').click()">Ganti</button>
+    </div>
+
+    <div class="card">
+      
+      <!-- FOTO KEGIATAN -->
+      <div class="form-group">
+        <div class="form-label">
+          <span>Foto Kegiatan</span>
+          <span class="hint">Pilih 1 - 4 foto</span>
+        </div>
+        <div class="photo-grid">
+          <div class="photo-btn" id="card1">
+            <span class="title">Foto 1 (Wajib)</span>
+            <span class="status" id="label1">+ Pilih Foto</span>
+            <input type="file" id="foto1" accept="image/*" />
+          </div>
+
+          <div class="photo-btn" id="card2">
+            <span class="title">Foto 2</span>
+            <span class="status" id="label2">+ Pilih Foto</span>
+            <input type="file" id="foto2" accept="image/*" />
+          </div>
+
+          <div class="photo-btn" id="card3">
+            <span class="title">Foto 3</span>
+            <span class="status" id="label3">+ Pilih Foto</span>
+            <input type="file" id="foto3" accept="image/*" />
+          </div>
+
+          <div class="photo-btn" id="card4">
+            <span class="title">Foto 4</span>
+            <span class="status" id="label4">+ Pilih Foto</span>
+            <input type="file" id="foto4" accept="image/*" />
+          </div>
+        </div>
+      </div>
+
+      <!-- TATA LETAK DOMINAN -->
+      <div class="form-group">
+        <div class="form-label">
+          <span>Tata Letak Dominan</span>
+          <span class="hint">Pilih susunan tata letak</span>
+        </div>
+        <select id="layoutSelector" style="margin-bottom: 0;">
+          <option value="auto" selected>Otomatis (Sesuai Jumlah Foto)</option>
+          <option value="top">Dominan Atas (Foto 1 Besar di Atas)</option>
+          <option value="bottom">Dominan Bawah (Foto Besar di Bawah)</option>
+          <option value="equal">Bagi Rata (Grid Seimbang)</option>
+        </select>
+      </div>
+
+      <!-- KETERANGAN KEGIATAN -->
+      <div class="form-group">
+        <div class="form-label">
+          <span>Keterangan Kegiatan</span>
+          <span class="hint">Pilih template / edit</span>
+        </div>
+        
+        <select id="templateSelector">
+          <option value="" selected disabled>-- Pilih Template Kegiatan Polsek Jatirogo --</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN GIAT OPS OFFENSIF DI DEPAN MAPOLSEK JATIROGO DI PIMPIN OLEH KAPOLSEK JATIROGO IPTU.M ARIF NUGROHO,S.H.">1. Giat Ops Offensif di Depan Mapolsek</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PENGATURAN ARUS LALU LINTAS ANTISIPASI KEMACETAN DAN LAKA LANTAS">2. Pengaturan Arus Lalu Lintas (Kemacetan & Laka)</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI BLUE LIGHT MENJELANG SUBUH ANTISIPASI 3C DAN GANGGUAN KAMTIBMAS LAINNYA">3. Patroli Blue Light Menjelang Subuh (3C)</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI KOTA PRESISI DI SWALAYAN SPBU PERTOKOAN EMAS DAN ATM PERBANKAN">4. Patroli Kota Presisi (Swalayan, SPBU, Perbankan)</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DIALOGIS DENGAN PENJAGA SEKOLAHAN DI WILAYAH KECAMATAN JATIROGO">5. Patroli Dialogis dengan Penjaga Sekolahan</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI DALOGIS DENGAN PETUGAS SATKAMLING DI WILAYAH KECAMATAN JATIROGO">6. Patroli Dialogis dengan Petugas Satkamling</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI KARHUTLA DI LAHAN HUTAN MILIK WARGA DI WILAYAH KEC. JATIROGO">7. Patroli Karhutla Lahan Hutan Milik Warga</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN PATROLI KARHUTLA DI LAHAN HUTAN MILIK PERHUTANI DI WILAYAH KEC. JATIROGO">8. Patroli Karhutla Lahan Hutan Milik Perhutani</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN MONITORING DAN PENGAMANAN KESIAPAN OPERASIONAL SPPG YKB JATIROGO DI DESA SADANG KECAMATAN JATIROGO">9. Monitoring & Pengamanan Operasional SPPG YKB</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN MONITORING DAN PENGAMANAN KEGIATAN KAJIAN MTA DI DESA PASEYAN KECAMATAN JATIROGO">10. Monitoring & Pengamanan Kajian MTA</option>
+          <option value="POLSEK JATIROGO MENINDAK LANJUTI LAPORAN DARI MASYARAKAT LEWAT CALL CENTER 110 LAPORAN ADANYA ">11. Tindak Lanjut Call Center 110</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN TPTKP KEJADIAN LAKA LANTAS DI JALAN ">12. TPTKP Kejadian Laka Lantas di Jalan</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN SERAH TERIMA TUGAS DAN TANGGUNG JAWAB PENJAGAAN DARI PETUGAS JAGA LAMA KEPADA PETUGAS JAGA BARU DALAM KEADAAN AMAN">13. Serah Terima Tugas Jaga Penjagaan</option>
+          <option value="CLEAR">-- Ketik Manual Sendiri (Kosongkan) --</option>
+        </select>
+
+        <textarea id="deskripsi" rows="3" placeholder="Pilih template di atas atau ketik langsung keterangan di sini..."></textarea>
+      </div>
+
+      <!-- TANGGAL -->
+      <div class="form-group">
+        <div class="form-label">
+          <span>Tanggal Kegiatan</span>
+        </div>
+        <div class="date-row">
+          <input type="text" id="tanggal" placeholder="Contoh: Sabtu, 26 September 2026" />
+          <button type="button" class="btn-today" onclick="setTodayDate()">Hari Ini</button>
+        </div>
+      </div>
+
+      <!-- KETERANGAN GPS MAP -->
+      <div class="form-group">
+        <div class="form-label">
+          <span>Keterangan GPS Map</span>
+          <span class="hint">Tampil di tiap foto</span>
+        </div>
+
+        <label class="gps-check"><input type="checkbox" id="gpsOn" checked> Tampilkan keterangan GPS di pojok kanan bawah tiap foto</label>
+        
+        <div class="map-hint">💡 Klik di peta untuk memilih koordinat otomatis (tidak perlu ketik manual)</div>
+        
+        <div class="gps-map-container">
+          <div id="gpsMap"></div>
+          <div class="map-info-box" id="mapInfoBox" style="display:none;">
+            <div><span class="map-info-label">Latitude</span></div>
+            <div class="map-info-value" id="mapLat">-</div>
+            <div style="margin-top: 0.5rem;"><span class="map-info-label">Longitude</span></div>
+            <div class="map-info-value" id="mapLng">-</div>
+          </div>
+        </div>
+
+        <input type="text" id="gpsLokasi" value="Kecamatan Jatirogo, Kabupaten Tuban 62362" placeholder="Baris lokasi (kecamatan, kabupaten, kode pos)" style="margin-bottom:.5rem" />
+        <input type="text" id="gpsNegara" value="Indonesia" placeholder="Baris terakhir (negara)" style="margin-bottom:.5rem" />
+
+        <select id="gpsTz">
+          <option value="WIB" selected>Zona waktu: WIB</option>
+          <option value="WITA">Zona waktu: WITA</option>
+          <option value="WIT">Zona waktu: WIT</option>
+        </select>
+
+        <label class="gps-check"><input type="checkbox" id="gpsCoordOn"> Tampilkan baris koordinat (Lat / Long)</label>
+        <div class="gps-2">
+          <input type="text" id="gpsLatAll" inputmode="decimal" placeholder="Latitude semua foto" />
+          <input type="text" id="gpsLngAll" inputmode="decimal" placeholder="Longitude semua foto" />
+        </div>
+
+        <div class="form-label" style="margin-top:.6rem"><span>Template Jam Otomatis</span><span class="hint">Mengikuti lokasi Jatirogo</span></div>
+        <select id="jamTemplate">
+          <option value="" selected disabled>-- Pilih template jam --</option>
+          <option value="subuh">Jam Subuh</option>
+          <option value="jumat">Jam Sholat Jumat</option>
+          <option value="dzuhur">Jam Dzuhur</option>
+          <option value="ashar">Jam Ashar</option>
+          <option value="maghrib">Jam Maghrib</option>
+          <option value="isya">Jam Isya</option>
+          <option value="now">Jam Sekarang</option>
+        </select>
+        <div class="gps-2">
+          <input type="text" id="jamOffset" inputmode="numeric" value="0" placeholder="Geser menit (mis. -30)" />
+          <input type="text" id="jamStep" inputmode="numeric" value="0" placeholder="Selisih antar foto (menit)" />
+        </div>
+        <div class="gps-sub" id="jamInfo">Geser menit: -30 berarti 30 menit sebelum waktu sholat. Jadwal dihitung dari tanggal kegiatan dan koordinat (kosong = Jatirogo).</div>
+
+        <div class="gps-sub">Per foto: jam (contoh 10.09, kosong = jam saat dibuat) dan koordinat (kosong = pakai koordinat semua foto).</div>
+        <div class="gps-row"><b>Foto 1</b><input type="text" id="gpsJam1" placeholder="Jam" /><input type="text" id="gpsLat1" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng1" inputmode="decimal" placeholder="Long" /></div>
+        <div class="gps-row"><b>Foto 2</b><input type="text" id="gpsJam2" placeholder="Jam" /><input type="text" id="gpsLat2" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng2" inputmode="decimal" placeholder="Long" /></div>
+        <div class="gps-row"><b>Foto 3</b><input type="text" id="gpsJam3" placeholder="Jam" /><input type="text" id="gpsLat3" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng3" inputmode="decimal" placeholder="Long" /></div>
+        <div class="gps-row"><b>Foto 4</b><input type="text" id="gpsJam4" placeholder="Jam" /><input type="text" id="gpsLat4" inputmode="decimal" placeholder="Lat" /><input type="text" id="gpsLng4" inputmode="decimal" placeholder="Long" /></div>
+        <button type="button" class="btn-today" style="padding:.6rem .85rem;margin-top:.2rem" onclick="setJamSekarang()">Isi Jam Sekarang (semua foto)</button>
+      </div>
+
+      <button class="btn-generate" id="generateBtn">
+        ⚡ Buat Dokumentasi
+      </button>
+
+    </div>
+
+    <!-- PREVIEW AREA -->
+    <div class="preview-card" id="previewContainer">
+      <div class="preview-title">Hasil Dokumentasi</div>
+      
+      <canvas id="outputCanvas" width="1080" height="1136"></canvas>
+      <img id="resultImage" alt="Hasil Dokumentasi" />
+
+      <div class="action-group">
+        <a id="btnDownloadLink" class="btn-download-direct" download="Dokumentasi_Polsek_Jatirogo.png">
+          📥 Unduh Gambar (HD)
+        </a>
+      </div>
+    </div>
+
+    <footer class="footer-copyright">
+      <p>© 2026 Polsek Jatirogo • Developed by <span class="author">@MasLuki.id</span></p>
+    </footer>
+
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <script>
+    // --- LOGIKA INISIALISASI MAP GPS ---
+    let mapInstance = null;
+    let mapMarker = null;
+    const defaultLat = -6.8733; // Jatirogo, Tuban
+    const defaultLng = 112.0276;
+    
+    function initializeMap() {
+      if (mapInstance) return; // Cegah inisialisasi ganda
+      
+      // Buat map
+      mapInstance = L.map('gpsMap').setView([defaultLat, defaultLng], 13);
+      
+      // Tambah tile layer (CartoDB - tidak terblocked)
+      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '© CartoDB, © OpenStreetMap contributors',
+        maxZoom: 19,
+        className: 'map-tiles'
+      }).addTo(mapInstance);
+      
+      // Buat marker default di Jatirogo
+      mapMarker = L.circleMarker([defaultLat, defaultLng], {
+        color: '#e11d48',
+        fill: true,
+        fillColor: '#fb7185',
+        fillOpacity: 0.7,
+        weight: 2,
+        radius: 8
+      }).addTo(mapInstance);
+      
+      // Handle click pada map
+      mapInstance.on('click', function(e) {
+        const lat = e.latlng.lat.toFixed(6);
+        const lng = e.latlng.lng.toFixed(6);
+        
+        // Update marker position
+        mapMarker.setLatLng([lat, lng]);
+        
+        // Update input fields untuk koordinat semua foto
+        document.getElementById('gpsLatAll').value = lat;
+        document.getElementById('gpsLngAll').value = lng;
+        document.getElementById('gpsCoordOn').checked = true;
+        
+        // Trigger event agar template jam terupdate
+        document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
+        document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
+        
+        // Update info box
+        updateMapInfo(lat, lng);
+      });
+      
+      // Update info box dengan posisi default
+      updateMapInfo(defaultLat, defaultLng);
+      
+      // Tampilkan info box
+      document.getElementById('mapInfoBox').style.display = 'block';
+    }
+    
+    function updateMapInfo(lat, lng) {
+      document.getElementById('mapLat').textContent = lat;
+      document.getElementById('mapLng').textContent = lng;
+    }
+    
+    // Inisialisasi map saat DOM siap
+    document.addEventListener('DOMContentLoaded', function() {
+      setTimeout(initializeMap, 100);
+    });
+    
+    // Jika input koordinat diubah manual, update marker di map
+    document.getElementById('gpsLatAll').addEventListener('input', function() {
+      updateMapMarkerFromInput();
+    });
+    
+    document.getElementById('gpsLngAll').addEventListener('input', function() {
+      updateMapMarkerFromInput();
+    });
+    
+    function updateMapMarkerFromInput() {
+      const lat = parseFloat(document.getElementById('gpsLatAll').value);
+      const lng = parseFloat(document.getElementById('gpsLngAll').value);
+      
+      if (!isNaN(lat) && !isNaN(lng) && mapInstance && mapMarker) {
+        mapMarker.setLatLng([lat, lng]);
+        mapInstance.setView([lat, lng], 13);
+        updateMapInfo(lat.toFixed(6), lng.toFixed(6));
+      }
+    }
+
+    // --- LOGIKA GENERATOR DOKUMENTASI ---
+    const canvas = document.getElementById("outputCanvas");
+    const ctx = canvas.getContext("2d");
+    const previewContainer = document.getElementById("previewContainer");
+    const resultImage = document.getElementById("resultImage");
+    const btnDownloadLink = document.getElementById("btnDownloadLink");
+    const frameStatusText = document.getElementById("frameStatusText");
+    const savedFramePicker = document.getElementById("savedFramePicker");
+    const layoutSelector = document.getElementById("layoutSelector");
+    const templateSelector = document.getElementById("templateSelector");
+    const deskripsiTextarea = document.getElementById("deskripsi");
+
+    templateSelector.addEventListener("change", (e) => {
+      const val = e.target.value;
+      if (val === "CLEAR") {
+        deskripsiTextarea.value = "";
+        deskripsiTextarea.focus();
+      } else if (val) {
+        deskripsiTextarea.value = val;
+      }
+    });
+
+    [1, 2, 3, 4].forEach(i => {
+      const input = document.getElementById(`foto${i}`);
+      const card = document.getElementById(`card${i}`);
+      const label = document.getElementById(`label${i}`);
+
+      input.addEventListener("change", (e) => {
+        if (e.target.files && e.target.files[0]) {
+          card.classList.add("active");
+          label.textContent = "✓ Terpilih";
+        } else {
+          card.classList.remove("active");
+          label.textContent = "+ Pilih Foto";
+        }
+      });
+    });
+
+    function setTodayDate() {
+      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      const now = new Date();
+      document.getElementById("tanggal").value = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+    }
+
+    let cachedFrameData = localStorage.getItem("polresta_frame_data");
+
+    function updateFrameStatus() {
+      if (cachedFrameData) {
+        frameStatusText.innerHTML = "Bingkai: <b style='color: #10b981;'>Siap (Tersimpan)</b>";
+      } else {
+        frameStatusText.innerHTML = "Bingkai: <b style='color: #facc15;'>bingkai1.jpg</b>";
+      }
+    }
+    updateFrameStatus();
+
+    savedFramePicker.addEventListener("change", (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          localStorage.setItem("polresta_frame_data", event.target.result);
+          cachedFrameData = event.target.result;
+          updateFrameStatus();
+          alert("Bingkai tersimpan permanen.");
+        } catch (err) {
+          cachedFrameData = event.target.result;
+          updateFrameStatus();
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function loadFrame() {
+      return new Promise((resolve) => {
+        if (cachedFrameData) {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+          img.src = cachedFrameData;
+          return;
+        }
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => resolve(null);
+        img.src = "bingkai1.jpg";
+      });
+    }
+
+    function readImageFile(file) {
+      return new Promise((resolve) => {
+        if (!file) return resolve(null);
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null);
+          img.src = e.target.result;
+        };
+        reader.onerror = () => resolve(null);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function drawCoverImage(ctx, img, dx, dy, dw, dh) {
+      const imgRatio = img.width / img.height;
+      const targetRatio = dw / dh;
+      let sx, sy, sw, sh;
+
+      if (imgRatio > targetRatio) {
+        sh = img.height;
+        sw = img.height * targetRatio;
+        sx = (img.width - sw) / 2;
+        sy = 0;
+      } else {
+        sw = img.width;
+        sh = img.width / targetRatio;
+        sx = 0;
+        sy = (img.height - sh) / 2;
+      }
+
+      ctx.drawImage(img, sx, sy, sw, sh, dx, dy, dw, dh);
+      if (img._stamp) drawGpsStamp(ctx, img._stamp, dx, dy, dw, dh);
+    }
+
+    // --- KETERANGAN GPS MAP DI TIAP FOTO ---
+    const GPS_FONT = 'Arial, "Segoe UI", sans-serif';
+    const pad2 = (n) => String(n).padStart(2, "0");
+
+    function todayLong() {
+      const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+      const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+      const d = new Date();
+      return `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    }
+
+    function nowTime() {
+      const d = new Date();
+      return `${pad2(d.getHours())}.${pad2(d.getMinutes())}`;
+    }
+
+    // Jam dan menit saja (buang detik jika ada)
+    function fixJam(s) {
+      const p = String(s).replace(/[:\s]/g, ".").split(".").filter(Boolean);
+      return p.length >= 2 ? `${pad2(p[0])}.${pad2(p[1])}` : String(s);
+    }
+
+    // --- JADWAL SHOLAT (metode Kemenag RI: Subuh 20 derajat, Isya 18 derajat, ihtiyath +2 menit) ---
+    const JATIROGO = { lat: -6.5333, lng: 111.9167 };
+    const BULAN = { januari:1, februari:2, maret:3, april:4, mei:5, juni:6, juli:7, agustus:8, september:9, oktober:10, november:11, desember:12,
+                    jan:1, feb:2, mar:3, apr:4, jun:6, jul:7, agu:8, agt:8, sep:9, okt:10, nov:11, des:12 };
+
+    function julianDay(y, m, d) {
+      if (m <= 2) { y -= 1; m += 12; }
+      const A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4);
+      return Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + d + B - 1524.5;
+    }
+
+    function prayerTimes(y, m, d, lat, lng, tz) {
+      const R = Math.PI / 180;
+      const fixA = (a) => { a = a - 360 * Math.floor(a / 360); return a; };
+      const fixH = (h) => { h = h - 24 * Math.floor(h / 24); return h; };
+      const sin = (x) => Math.sin(x * R), cos = (x) => Math.cos(x * R), tan = (x) => Math.tan(x * R);
+      const jd0 = julianDay(y, m, d) - lng / 360;
+
+      function sun(jd) {
+        const D = jd - 2451545.0;
+        const g = fixA(357.529 + 0.98560028 * D);
+        const q = fixA(280.459 + 0.98564736 * D);
+        const L = fixA(q + 1.915 * sin(g) + 0.020 * sin(2 * g));
+        const e = 23.439 - 0.00000036 * D;
+        const RA = fixH(Math.atan2(cos(e) * sin(L), cos(L)) / R / 15);
+        return { decl: Math.asin(sin(e) * sin(L)) / R, eqt: q / 15 - RA };
+      }
+      const mid = (t) => fixH(12 - sun(jd0 + t).eqt);
+      function atAngle(angle, t, ccw) {
+        const decl = sun(jd0 + t).decl, noon = mid(t);
+        const v = (-sin(angle) - sin(decl) * sin(lat)) / (cos(decl) * cos(lat));
+        const dt = Math.acos(Math.max(-1, Math.min(1, v))) / R / 15;
+        return noon + (ccw ? -dt : dt);
+      }
+      function asr(t) {
+        const decl = sun(jd0 + t).decl;
+        const ang = -Math.atan(1 / (1 + tan(Math.abs(lat - decl)))) / R;
+        return atAngle(ang, t, false);
+      }
+      const adj = tz - lng / 15;
+      const T = {
+        subuh: atAngle(20, 5 / 24, true),
+        dzuhur: mid(12 / 24),
+        ashar: asr(13 / 24),
+        maghrib: atAngle(0.833, 18 / 24, false),
+        isya: atAngle(18, 18 / 24, false)
+      };
+      const out = {};
+      for (const k in T) out[k] = Math.ceil((T[k] + adj) * 60 + 2 - 1e-9); // menit sejak 00.00, +2 menit ihtiyath
+      out.jumat = out.dzuhur;
+      return out;
+    }
+
+    function fmtMenit(total) {
+      total = ((Math.round(total) % 1440) + 1440) % 1440;
+      return `${pad2(Math.floor(total / 60))}.${pad2(total % 60)}`;
+    }
+
+    function tanggalDipakai() {
+      const txt = document.getElementById("tanggal").value;
+      const m = txt.match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+      if (m && BULAN[m[2].toLowerCase()]) return { y: +m[3], m: BULAN[m[2].toLowerCase()], d: +m[1] };
+      const n = new Date();
+      return { y: n.getFullYear(), m: n.getMonth() + 1, d: n.getDate() };
+    }
+
+    function applyJamTemplate() {
+      const key = document.getElementById("jamTemplate").value;
+      const info = document.getElementById("jamInfo");
+      if (!key) return;
+      const tzMap = { WIB: 7, WITA: 8, WIT: 9 };
+      const tz = tzMap[document.getElementById("gpsTz").value] || 7;
+      const lat = parseCoord(document.getElementById("gpsLatAll").value);
+      const lng = parseCoord(document.getElementById("gpsLngAll").value);
+      const L = (lat !== null && lng !== null) ? { lat, lng } : JATIROGO;
+      const t = tanggalDipakai();
+      const pt = prayerTimes(t.y, t.m, t.d, L.lat, L.lng, tz);
+      const off = parseInt(document.getElementById("jamOffset").value) || 0;
+      const step = parseInt(document.getElementById("jamStep").value) || 0;
+
+      let base;
+      if (key === "now") { const n = new Date(); base = n.getHours() * 60 + n.getMinutes(); }
+      else base = pt[key];
+
+      [1, 2, 3, 4].forEach((i) => {
+        document.getElementById(`gpsJam${i}`).value = fmtMenit(base + off + (i - 1) * step);
+      });
+      info.textContent = `Jadwal ${pad2(t.d)}/${pad2(t.m)}/${t.y}: Subuh ${fmtMenit(pt.subuh)} - Dzuhur/Jumat ${fmtMenit(pt.dzuhur)} - Ashar ${fmtMenit(pt.ashar)} - Maghrib ${fmtMenit(pt.maghrib)} - Isya ${fmtMenit(pt.isya)}`;
+    }
+
+    function setJamSekarang() {
+      [1, 2, 3, 4].forEach(i => { document.getElementById(`gpsJam${i}`).value = nowTime(); });
+    }
+
+    function parseCoord(v) {
+      const n = parseFloat(String(v || "").trim().replace(",", "."));
+      return isFinite(n) ? n : null;
+    }
+
+    function buildGpsStamp(n, tanggalText) {
+      const val = (id) => document.getElementById(id).value.trim();
+      const jam = fixJam(val(`gpsJam${n}`) || nowTime());
+      const lines = [`${tanggalText || todayLong()} ${jam} ${val("gpsTz") || document.getElementById("gpsTz").value}`];
+      if (val("gpsLokasi")) lines.push(val("gpsLokasi"));
+      if (val("gpsNegara")) lines.push(val("gpsNegara"));
+      if (document.getElementById("gpsCoordOn").checked) {
+        const lat = parseCoord(val(`gpsLat${n}`) || val("gpsLatAll"));
+        const lng = parseCoord(val(`gpsLng${n}`) || val("gpsLngAll"));
+        if (lat !== null && lng !== null) lines.push(`Lat ${lat.toFixed(6)}  Long ${lng.toFixed(6)}`);
+      }
+      return { lines };
+    }
+
+    function drawGpsStamp(ctx, st, dx, dy, dw, dh) {
+      const lines = st.lines;
+      if (!lines || !lines.length) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(dx, dy, dw, dh);
+      ctx.clip();
+
+      let fs = Math.max(10, Math.round(dw * 0.034));
+      ctx.font = `bold ${fs}px ${GPS_FONT}`;
+      const maxW = dw * 0.94;
+      const widest = Math.max(...lines.map(t => ctx.measureText(t).width));
+      if (widest > maxW) {
+        fs = Math.floor(fs * maxW / widest);
+        ctx.font = `bold ${fs}px ${GPS_FONT}`;
+      }
+      const lh = Math.round(fs * 1.22);
+      const pad = Math.round(dw * 0.02);
+
+      // gradasi tipis agar teks tetap terbaca di latar terang
+      const gh = lines.length * lh + pad * 2;
+      const g = ctx.createLinearGradient(0, dy + dh - gh, 0, dy + dh);
+      g.addColorStop(0, "rgba(0,0,0,0)");
+      g.addColorStop(1, "rgba(0,0,0,0.38)");
+      ctx.fillStyle = g;
+      ctx.fillRect(dx, dy + dh - gh, dw, gh);
+
+      ctx.textAlign = "right";
+      ctx.textBaseline = "alphabetic";
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "rgba(0,0,0,0.9)";
+      ctx.shadowBlur = Math.max(2, fs * 0.15);
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+
+      let y = dy + dh - pad - (lines.length - 1) * lh - Math.round(fs * 0.2);
+      for (const t of lines) {
+        ctx.fillText(t, dx + dw - pad, y);
+        y += lh;
+      }
+      ctx.restore();
+    }
+
+    function renderPhotoGrid(ctx, photos, mode, x, y, w, h, gap) {
+      const total = photos.length;
+      if (total === 0) return;
+
+      if (mode === "auto") {
+        if (total === 1) mode = "equal";
+        else if (total === 2) mode = "equal";
+        else if (total === 3) mode = "top";
+        else mode = "equal";
+      }
+
+      if (total === 1) {
+        drawCoverImage(ctx, photos[0], x, y, w, h);
+      } else if (total === 2) {
+        if (mode === "equal") {
+          const colW = (w - gap) / 2;
+          drawCoverImage(ctx, photos[0], x, y, colW, h);
+          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, h);
+        } else {
+          const rowH = (h - gap) / 2;
+          drawCoverImage(ctx, photos[0], x, y, w, rowH);
+          drawCoverImage(ctx, photos[1], x, y + rowH + gap, w, rowH);
+        }
+      } else if (total === 3) {
+        const rowH = (h - gap) / 2;
+        const colW = (w - gap) / 2;
+
+        if (mode === "top") {
+          drawCoverImage(ctx, photos[0], x, y, w, rowH);
+          drawCoverImage(ctx, photos[1], x, y + rowH + gap, colW, rowH);
+          drawCoverImage(ctx, photos[2], x + colW + gap, y + rowH + gap, colW, rowH);
+        } else if (mode === "bottom") {
+          drawCoverImage(ctx, photos[0], x, y, colW, rowH);
+          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, rowH);
+          drawCoverImage(ctx, photos[2], x, y + rowH + gap, w, rowH);
+        } else {
+          const colW3 = (w - (gap * 2)) / 3;
+          drawCoverImage(ctx, photos[0], x, y, colW3, h);
+          drawCoverImage(ctx, photos[1], x + colW3 + gap, y, colW3, h);
+          drawCoverImage(ctx, photos[2], x + (colW3 * 2) + (gap * 2), y, colW3, h);
+        }
+      } else if (total >= 4) {
+        const rowH = (h - gap) / 2;
+        const colW = (w - gap) / 2;
+
+        if (mode === "top") {
+          const subColW = (w - (gap * 2)) / 3;
+          drawCoverImage(ctx, photos[0], x, y, w, rowH);
+          drawCoverImage(ctx, photos[1], x, y + rowH + gap, subColW, rowH);
+          drawCoverImage(ctx, photos[2], x + subColW + gap, y + rowH + gap, subColW, rowH);
+          drawCoverImage(ctx, photos[3], x + (subColW * 2) + (gap * 2), y + rowH + gap, subColW, rowH);
+        } else if (mode === "bottom") {
+          const subColW = (w - (gap * 2)) / 3;
+          drawCoverImage(ctx, photos[0], x, y, subColW, rowH);
+          drawCoverImage(ctx, photos[1], x + subColW + gap, y, subColW, rowH);
+          drawCoverImage(ctx, photos[2], x + (subColW * 2) + (gap * 2), y, subColW, rowH);
+          drawCoverImage(ctx, photos[3], x, y + rowH + gap, w, rowH);
+        } else {
+          drawCoverImage(ctx, photos[0], x, y, colW, rowH);
+          drawCoverImage(ctx, photos[1], x + colW + gap, y, colW, rowH);
+          drawCoverImage(ctx, photos[2], x, y + rowH + gap, colW, rowH);
+          drawCoverImage(ctx, photos[3], x + colW + gap, y + rowH + gap, colW, rowH);
+        }
+      }
+    }
+
+    function computeLines(ctx, text, maxWidth) {
+      const paragraphs = text.split("\n");
+      const lines = [];
+
+      paragraphs.forEach((para) => {
+        const words = para.trim().split(/\s+/);
+        let currentLine = "";
+
+        for (let n = 0; n < words.length; n++) {
+          if (!words[n]) continue;
+          const testLine = currentLine ? `${currentLine} ${words[n]}` : words[n];
+          const metrics = ctx.measureText(testLine);
+          if (metrics.width > maxWidth && n > 0) {
+            lines.push(currentLine);
+            currentLine = words[n];
+          } else {
+            currentLine = testLine;
+          }
+        }
+        if (currentLine) lines.push(currentLine);
+      });
+
+      return lines;
+    }
+
+    function drawAutoFitText(ctx, text, centerX, boxTop, boxBottom, maxWidth, initialFontSize) {
+      const maxHeight = boxBottom - boxTop;
+      let fontSize = initialFontSize;
+      let lineHeight = Math.round(fontSize * 1.30);
+      let lines = [];
+
+      while (fontSize >= 12) {
+        ctx.font = `900 ${fontSize}px Arial, "Segoe UI", sans-serif`;
+        lines = computeLines(ctx, text, maxWidth);
+        const totalTextHeight = lines.length * lineHeight;
+
+        if (totalTextHeight <= maxHeight) break;
+
+        fontSize -= 1;
+        lineHeight = Math.round(fontSize * 1.28);
+      }
+
+      let startY = boxTop + (maxHeight - (lines.length * lineHeight)) / 2 + (lineHeight * 0.75);
+
+      ctx.textAlign = "center";
+      ctx.textBaseline = "alphabetic";
+      for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], centerX, startY);
+        startY += lineHeight;
+      }
+    }
+
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const f1 = document.getElementById("foto1").files[0];
+      const f2 = document.getElementById("foto2").files[0];
+      const f3 = document.getElementById("foto3").files[0];
+      const f4 = document.getElementById("foto4").files[0];
+
+      if (!f1 && !f2 && !f3 && !f4) {
+        alert("Harap pilih minimal 1 foto kegiatan!");
+        return;
+      }
+
+      const deskripsiText = document.getElementById("deskripsi").value;
+      const tanggalText = document.getElementById("tanggal").value;
+      const layoutMode = layoutSelector.value;
+
+      const [frameImg, img1, img2, img3, img4] = await Promise.all([
+        loadFrame(),
+        readImageFile(f1),
+        readImageFile(f2),
+        readImageFile(f3),
+        readImageFile(f4)
+      ]);
+
+      // Pasang keterangan GPS ke masing-masing foto
+      const gpsOn = document.getElementById("gpsOn").checked;
+      [img1, img2, img3, img4].forEach((im, i) => {
+        if (im) im._stamp = gpsOn ? buildGpsStamp(i + 1, tanggalText.trim()) : null;
+      });
+
+      const W = 1080;
+      const H = 1136;
+      canvas.width = W;
+      canvas.height = H;
+
+      ctx.clearRect(0, 0, W, H);
+
+      // 1. Gambar Bingkai Utama Sebagai Latar Belakang
+      if (frameImg) {
+        ctx.drawImage(frameImg, 0, 0, W, H);
+      } else {
+        ctx.fillStyle = "#1e0b0e";
+        ctx.fillRect(0, 0, W, H);
+      }
+
+      // 2. BATAS AREA FOTO PRESISI DI DALAM BINGKAI MERAH
+      const contentX = 32;
+      const contentY = 282;
+      const contentW = 1016;
+      const contentH = 598;
+      const gap = 6;
+
+      // 3. Potong & Render Foto Tepat Mengisi Area Bingkai
+      ctx.save();
+      ctx.beginPath();
+      ctx.rect(contentX, contentY, contentW, contentH);
+      ctx.clip(); // Potong canvas agar foto rapi di dalam batas bingkai
+
+      const activePhotos = [img1, img2, img3, img4].filter(img => img !== null);
+      renderPhotoGrid(ctx, activePhotos, layoutMode, contentX, contentY, contentW, contentH, gap);
+      ctx.restore();
+
+      // 4. Render Teks Deskripsi
+      if (deskripsiText.trim()) {
+        ctx.fillStyle = "#ffffff";
+        ctx.shadowColor = "rgba(0, 0, 0, 0.95)";
+        ctx.shadowBlur = 4;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
+
+        const textZoneTop = 900;
+        const textZoneBottom = 1050;
+        const initialSize = 30;
+
+        drawAutoFitText(
+          ctx,
+          deskripsiText.toUpperCase(),
+          Math.round(W / 2),
+          textZoneTop,
+          textZoneBottom,
+          Math.round(W * 0.88),
+          initialSize
+        );
+
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+      }
+
+      // 5. Render Tanggal Kegiatan
+      if (tanggalText.trim()) {
+        const dateFontSize = 24;
+        ctx.fillStyle = "#ffffff";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "middle";
+        ctx.font = `bold ${dateFontSize}px Arial, "Segoe UI", sans-serif`;
+
+        ctx.shadowColor = "rgba(0, 0, 0, 0.75)";
+        ctx.shadowBlur = 2;
+
+        ctx.fillText(tanggalText, 55, 1108);
+
+        ctx.shadowColor = "transparent";
+        ctx.shadowBlur = 0;
+      }
+
+      // Output hasil gambar ke HTML
+      canvas.toBlob((blob) => {
+        if (!blob) return;
+        const blobUrl = URL.createObjectURL(blob);
+        resultImage.src = blobUrl;
+        btnDownloadLink.href = blobUrl;
+        previewContainer.style.display = "block";
+        previewContainer.scrollIntoView({ behavior: "smooth" });
+      }, "image/png");
+    });
+
+    // Template jam otomatis: hitung ulang saat tanggal / koordinat / zona waktu berubah
+    ["jamTemplate", "jamOffset", "jamStep", "tanggal", "gpsLatAll", "gpsLngAll", "gpsTz"].forEach((id) => {
+      const el = document.getElementById(id);
+      el.addEventListener("input", applyJamTemplate);
+      el.addEventListener("change", applyJamTemplate);
+    });
+    const _setToday = setTodayDate;
+    setTodayDate = function () { _setToday(); applyJamTemplate(); };
+  </script>
+</body>
+</html>
