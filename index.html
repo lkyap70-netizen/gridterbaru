@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>POLSEK JATIROGO - Generator Dokumentasi</title>
-  
+
   <meta name="theme-color" content="#0f172a" />
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,6 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
 
   <style>
     * {
@@ -33,17 +34,9 @@
       justify-content: center;
     }
 
-    .app-container {
-      width: 100%;
-      max-width: 520px;
-      margin: 0 auto;
-    }
+    .app-container { width: 100%; max-width: 520px; margin: 0 auto; }
 
-    .header {
-      text-align: center;
-      padding: 0 0 1.25rem;
-    }
-
+    .header { text-align: center; padding: 0 0 1.25rem; }
     .header-badge {
       display: inline-block;
       background-color: rgba(225, 29, 72, 0.15);
@@ -56,454 +49,210 @@
       margin-bottom: 0.4rem;
       text-transform: uppercase;
     }
-
-    .header h1 {
-      font-size: 1.45rem;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      color: #ffffff;
-      line-height: 1.2;
-    }
-
-    .header h2 {
-      font-size: 1rem;
-      font-weight: 700;
-      color: #cbd5e1;
-      margin-top: 0.15rem;
-      letter-spacing: 1px;
-    }
+    .header h1 { font-size: 1.45rem; font-weight: 800; letter-spacing: 0.5px; color: #fff; line-height: 1.2; }
+    .header h2 { font-size: 1rem; font-weight: 700; color: #cbd5e1; margin-top: 0.15rem; letter-spacing: 1px; }
 
     .frame-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #1e293b;
-      padding: 0.65rem 0.85rem;
-      border-radius: 10px;
-      margin-bottom: 1.2rem;
-      border: 1px solid #334155;
-      font-size: 0.8rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: #1e293b; padding: 0.65rem 0.85rem; border-radius: 10px;
+      margin-bottom: 1.2rem; border: 1px solid #334155; font-size: 0.8rem;
     }
-
-    .frame-bar span {
-      color: #94a3b8;
-      font-weight: 500;
-    }
+    .frame-bar span { color: #94a3b8; font-weight: 500; }
 
     .btn-small {
-      background: #334155;
-      color: #f8fafc;
-      border: none;
-      padding: 0.35rem 0.65rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      cursor: pointer;
+      background: #334155; color: #f8fafc; border: none;
+      padding: 0.35rem 0.65rem; border-radius: 6px;
+      font-size: 0.75rem; font-weight: 600; cursor: pointer;
     }
 
-    .card {
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 1.2rem;
-      border: 1px solid #334155;
-      margin-bottom: 1.2rem;
-    }
-
-    .form-group {
-      margin-bottom: 1.15rem;
-    }
-
+    .card { background: #1e293b; border-radius: 14px; padding: 1.2rem; border: 1px solid #334155; margin-bottom: 1.2rem; }
+    .form-group { margin-bottom: 1.15rem; }
     .form-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #e2e8f0;
-      margin-bottom: 0.5rem;
+      display: flex; justify-content: space-between;
+      font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 0.5rem;
     }
+    .form-label span.hint { font-size: 0.75rem; color: #94a3b8; font-weight: 400; }
 
-    .form-label span.hint {
-      font-size: 0.75rem;
-      color: #94a3b8;
-      font-weight: 400;
-    }
-
-    .photo-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 0.65rem;
-    }
-
+    .photo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65rem; }
     .photo-btn {
-      position: relative;
-      background: #0f172a;
-      border: 1.5px dashed #475569;
-      border-radius: 10px;
-      padding: 0.85rem 0.5rem;
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+      position: relative; background: #0f172a; border: 1.5px dashed #475569;
+      border-radius: 10px; padding: 0.85rem 0.5rem; text-align: center;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer;
     }
-
-    .photo-btn.active {
-      border-style: solid;
-      border-color: #10b981;
-      background: rgba(16, 185, 129, 0.08);
-    }
-
-    .photo-btn input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
-    }
-
-    .photo-btn .title {
-      font-size: 0.78rem;
-      font-weight: 700;
-      color: #f1f5f9;
-      margin-bottom: 0.15rem;
-    }
-
+    .photo-btn.active { border-style: solid; border-color: #10b981; background: rgba(16, 185, 129, 0.08); }
+    .photo-btn input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .photo-btn .title { font-size: 0.78rem; font-weight: 700; color: #f1f5f9; margin-bottom: 0.15rem; }
     .photo-btn .status {
-      font-size: 0.7rem;
-      color: #94a3b8;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      max-width: 90%;
+      font-size: 0.7rem; color: #94a3b8; white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; max-width: 90%;
     }
-
-    .photo-btn.active .title {
-      color: #10b981;
-    }
-
-    .photo-btn.active .status {
-      color: #34d399;
-      font-weight: 600;
-    }
+    .photo-btn.active .title { color: #10b981; }
+    .photo-btn.active .status { color: #34d399; font-weight: 600; }
 
     select, textarea, input[type="text"] {
-      width: 100%;
-      background: #0f172a;
-      border: 1px solid #475569;
-      border-radius: 10px;
-      padding: 0.75rem 0.85rem;
-      font-size: 0.85rem;
-      color: #ffffff;
-      outline: none;
+      width: 100%; background: #0f172a; border: 1px solid #475569; border-radius: 10px;
+      padding: 0.75rem 0.85rem; font-size: 0.85rem; color: #fff; outline: none;
     }
-
     select {
-      margin-bottom: 0.65rem;
-      cursor: pointer;
-      appearance: none;
+      margin-bottom: 0.65rem; cursor: pointer; appearance: none;
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-      background-repeat: no-repeat;
-      background-position: right 0.85rem center;
-      background-size: 1em;
+      background-repeat: no-repeat; background-position: right 0.85rem center; background-size: 1em;
     }
+    select option { background: #0f172a; color: #f8fafc; }
+    select:focus, textarea:focus, input[type="text"]:focus { border-color: #e11d48; }
+    textarea::placeholder, input[type="text"]::placeholder { color: #64748b; font-size: 0.82rem; }
 
-    select option {
-      background: #0f172a;
-      color: #f8fafc;
-    }
-
-    select:focus, textarea:focus, input[type="text"]:focus {
-      border-color: #e11d48;
-    }
-
-    textarea::placeholder, input[type="text"]::placeholder {
-      color: #64748b;
-      font-size: 0.82rem;
-    }
-
-    .date-row {
-      display: flex;
-      gap: 0.5rem;
-    }
-
-    .date-row input {
-      flex: 1;
-    }
-
+    .date-row { display: flex; gap: 0.5rem; }
+    .date-row input { flex: 1; }
     .btn-today {
-      background: #334155;
-      color: #f8fafc;
-      border: 1px solid #475569;
-      border-radius: 10px;
-      padding: 0 0.85rem;
-      font-size: 0.78rem;
-      font-weight: 600;
-      cursor: pointer;
-      white-space: nowrap;
+      background: #334155; color: #f8fafc; border: 1px solid #475569; border-radius: 10px;
+      padding: 0 0.85rem; font-size: 0.78rem; font-weight: 600; cursor: pointer; white-space: nowrap;
     }
 
     .btn-generate {
-      width: 100%;
-      background: #e11d48;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 0.95rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      width: 100%; background: #e11d48; color: #fff; border: none; border-radius: 12px;
+      padding: 0.95rem; font-size: 0.95rem; font-weight: 700; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem;
       box-shadow: 0 4px 12px rgba(225, 29, 72, 0.35);
     }
-
-    .btn-generate:active {
-      background: #be123c;
-      transform: scale(0.98);
-    }
+    .btn-generate:active { background: #be123c; transform: scale(0.98); }
 
     .preview-card {
-      background: #1e293b;
-      border-radius: 14px;
-      padding: 1.2rem;
-      border: 1px solid #334155;
-      text-align: center;
-      display: none;
-      margin-bottom: 1.5rem;
+      background: #1e293b; border-radius: 14px; padding: 1.2rem; border: 1px solid #334155;
+      text-align: center; display: none; margin-bottom: 1.5rem;
     }
-
     .preview-title {
-      font-size: 0.85rem;
-      font-weight: 700;
-      color: #94a3b8;
-      margin-bottom: 0.85rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
+      font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-bottom: 0.85rem;
+      text-transform: uppercase; letter-spacing: 0.5px;
     }
-
-    #resultImage {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      border: 2px solid #475569;
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    #outputCanvas {
-      display: none;
-    }
-
+    #resultImage { width: 100%; height: auto; border-radius: 8px; border: 2px solid #475569; margin-bottom: 1rem; display: block; }
+    #outputCanvas { display: none; }
     .btn-download-direct {
-      width: 100%;
-      background: #10b981;
-      color: #ffffff;
-      padding: 0.95rem;
-      font-size: 0.95rem;
-      font-weight: 700;
-      border-radius: 10px;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      cursor: pointer;
-      border: none;
+      width: 100%; background: #10b981; color: #fff; padding: 0.95rem; font-size: 0.95rem;
+      font-weight: 700; border-radius: 10px; text-decoration: none;
+      display: flex; align-items: center; justify-content: center; gap: 0.5rem; cursor: pointer; border: none;
     }
+    .btn-download-direct:active { background: #059669; }
 
-    .btn-download-direct:active {
-      background: #059669;
-    }
-
-    .footer-copyright {
-      text-align: center;
-      padding: 1rem 0 0.5rem;
-      font-size: 0.75rem;
-      color: #64748b;
-      letter-spacing: 0.3px;
-    }
-
-    .footer-copyright .author {
-      color: #94a3b8;
-      font-weight: 700;
-      text-decoration: none;
-    }
+    .footer-copyright { text-align: center; padding: 1rem 0 0.5rem; font-size: 0.75rem; color: #64748b; letter-spacing: 0.3px; }
+    .footer-copyright .author { color: #94a3b8; font-weight: 700; }
 
     /* --- KETERANGAN GPS --- */
-    .gps-check{display:flex;align-items:center;gap:.5rem;font-size:.82rem;color:#e2e8f0;margin-bottom:.6rem;cursor:pointer}
-    .gps-check input{width:1.05rem;height:1.05rem;accent-color:#e11d48}
-    .gps-sub{font-size:.72rem;color:#94a3b8;margin:.2rem 0 .4rem}
-    .gps-row{display:grid;grid-template-columns:2.4rem 1.25fr 1fr 1fr;gap:.4rem;align-items:center;margin-bottom:.4rem}
-    .gps-row b{font-size:.74rem;color:#cbd5e1}
-    .gps-row input[type="text"]{padding:.55rem .5rem;font-size:.76rem}
-    .gps-2{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
-    .gps-2 input{margin-bottom:.5rem}
-    
-    /* --- MAP STYLING --- */
-    .gps-map-container {
-      background: #0f172a;
-      border: 1.5px solid #475569;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 0.8rem 0 1rem 0;
-      position: relative;
-    }
-    
-    #gpsMap {
-      width: 100%;
-      height: 350px;
-      border-radius: 8px;
-    }
-    
-    .map-info-box {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid #475569;
-      border-radius: 8px;
-      padding: 0.8rem;
-      font-size: 0.75rem;
-      color: #e2e8f0;
-      max-width: 180px;
-      z-index: 1000;
-      backdrop-filter: blur(10px);
-    }
-    
-    .map-info-box div {
-      margin: 0.3rem 0;
-      word-break: break-all;
-    }
-    
-    .map-info-label {
-      color: #94a3b8;
-      font-size: 0.7rem;
-      font-weight: 600;
-      text-transform: uppercase;
-    }
-    
-    .map-info-value {
-      color: #10b981;
-      font-weight: 600;
-      font-size: 0.8rem;
-    }
-    
-    .map-hint {
-      font-size: 0.75rem;
-      color: #64748b;
-      font-style: italic;
-      padding: 0.6rem 0;
-      background: rgba(16, 185, 129, 0.1);
-      padding: 0.6rem;
-      border-radius: 6px;
-      margin-bottom: 0.8rem;
-      border-left: 3px solid #10b981;
-    }
-    
-    .leaflet-container {
-      background: #1e293b;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    }
-    
-    .leaflet-control-attribution {
-      background: rgba(30, 41, 59, 0.8) !important;
-      color: #94a3b8 !important;
-    }
-  </style>
-  
-  <!-- Leaflet CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
-  <style>
-    .leaflet-control-zoom-in, .leaflet-control-zoom-out {
-      background-color: #1e293b !important;
-      color: #f8fafc !important;
-      border: 1px solid #475569 !important;
-    }
-    .leaflet-control-zoom-in:hover, .leaflet-control-zoom-out:hover {
-      background-color: #334155 !important;
-    }
-  </style>
+    .gps-check { display: flex; align-items: center; gap: .5rem; font-size: .82rem; color: #e2e8f0; margin-bottom: .6rem; cursor: pointer; }
+    .gps-check input { width: 1.05rem; height: 1.05rem; accent-color: #e11d48; }
+    .gps-sub { font-size: .72rem; color: #94a3b8; margin: .2rem 0 .4rem; }
+    .gps-row { display: grid; grid-template-columns: 2.4rem 1.25fr 1fr 1fr; gap: .4rem; align-items: center; margin-bottom: .4rem; }
+    .gps-row b { font-size: .74rem; color: #cbd5e1; }
+    .gps-row input[type="text"] { padding: .55rem .5rem; font-size: .76rem; }
+    .gps-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+    .gps-2 input { margin-bottom: .5rem; }
 
-  <!-- Search CSS -->
-  <style>
-    .map-search-wrapper {
-      position: relative;
-      margin-bottom: 0.8rem;
+    .map-hint {
+      font-size: 0.75rem; color: #64748b; font-style: italic;
+      background: rgba(16, 185, 129, 0.1); padding: 0.6rem; border-radius: 6px;
+      margin-bottom: 0.8rem; border-left: 3px solid #10b981;
     }
-    
-    .map-search-box {
-      width: 100%;
-      padding: 0.75rem 0.85rem;
-      background: #0f172a;
-      border: 1px solid #475569;
-      border-radius: 10px;
-      font-size: 0.85rem;
-      color: #ffffff;
-      outline: none;
-      transition: border-color 0.2s;
+
+    /* ============ PETA GAYA GOOGLE MAPS ============ */
+    .gmap-wrap {
+      position: relative; border-radius: 12px; overflow: hidden;
+      border: 1px solid #475569; margin: 0 0 1rem 0; background: #e5e3df;
     }
-    
-    .map-search-box:focus {
-      border-color: #e11d48;
+    #gpsMap { width: 100%; height: 440px; background: #e5e3df; z-index: 0; }
+    .leaflet-container { font-family: 'Inter', -apple-system, sans-serif; background: #e5e3df; }
+
+    /* Kotak pencarian melayang */
+    .gm-search {
+      position: absolute; top: 10px; left: 10px; right: 10px; z-index: 1000;
     }
-    
-    .map-search-box::placeholder {
-      color: #64748b;
+    .gm-search-bar {
+      display: flex; align-items: center; background: #fff; border-radius: 28px;
+      box-shadow: 0 2px 6px rgba(60,64,67,.3), 0 1px 2px rgba(60,64,67,.15);
+      padding: 0 6px 0 14px; height: 46px;
     }
-    
+    .gm-search-bar svg { flex: none; }
+    .gm-search-bar input#mapSearchBox {
+      flex: 1; border: none; background: transparent; color: #202124;
+      font-size: .92rem; padding: 0 10px; height: 100%; border-radius: 0;
+    }
+    .gm-search-bar input#mapSearchBox::placeholder { color: #70757a; font-size: .9rem; }
+    .gm-search-bar input#mapSearchBox:focus { border: none; }
+    .gm-clear {
+      border: none; background: transparent; width: 34px; height: 34px; border-radius: 50%;
+      cursor: pointer; display: none; align-items: center; justify-content: center; color: #5f6368;
+    }
+    .gm-clear:hover { background: #f1f3f4; }
     .search-results {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      right: 0;
-      background: #1e293b;
-      border: 1px solid #475569;
-      border-top: none;
-      border-radius: 0 0 10px 10px;
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 1001;
-      display: none;
+      background: #fff; border-radius: 12px; margin-top: 6px; max-height: 240px; overflow-y: auto;
+      box-shadow: 0 2px 6px rgba(60,64,67,.3), 0 1px 2px rgba(60,64,67,.15); display: none;
     }
-    
-    .search-results.active {
-      display: block;
-    }
-    
+    .search-results.active { display: block; }
     .search-item {
-      padding: 0.7rem 0.85rem;
-      color: #e2e8f0;
-      font-size: 0.8rem;
-      cursor: pointer;
-      border-bottom: 1px solid #334155;
-      transition: background-color 0.15s;
+      display: flex; gap: 12px; align-items: flex-start; padding: 10px 14px; cursor: pointer;
+      color: #202124; font-size: .84rem; border-bottom: 1px solid #f1f3f4;
     }
-    
-    .search-item:hover {
-      background-color: rgba(225, 29, 72, 0.2);
-      color: #fb7185;
+    .search-item:last-child { border-bottom: none; }
+    .search-item:hover { background: #f8f9fa; }
+    .search-item .pin { flex: none; margin-top: 2px; }
+    .search-item strong { display: block; font-weight: 600; }
+    .search-item small { color: #70757a; font-size: .74rem; line-height: 1.3; display: block; }
+    .search-loading { padding: 12px 14px; color: #70757a; font-size: .8rem; }
+
+    /* Tombol di kanan bawah (zoom + lokasi saya) */
+    .leaflet-bottom.leaflet-right { margin-bottom: 18px; }
+    .leaflet-control-zoom { border: none !important; box-shadow: 0 2px 6px rgba(60,64,67,.3) !important; border-radius: 8px !important; overflow: hidden; }
+    .leaflet-control-zoom a {
+      width: 40px !important; height: 40px !important; line-height: 40px !important;
+      font-size: 22px !important; color: #5f6368 !important; background: #fff !important; border: none !important;
     }
-    
-    .search-item:last-child {
-      border-bottom: none;
+    .leaflet-control-zoom a:first-child { border-bottom: 1px solid #e8eaed !important; }
+    .leaflet-control-zoom a:hover { background: #f1f3f4 !important; color: #202124 !important; }
+    .gm-btn {
+      width: 40px; height: 40px; background: #fff; border: none; border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(60,64,67,.3); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; margin-bottom: 10px;
     }
-    
-    .search-loading {
-      padding: 0.7rem 0.85rem;
-      color: #94a3b8;
-      font-size: 0.75rem;
-      text-align: center;
+    .gm-btn:hover { background: #f1f3f4; }
+    .gm-btn.busy svg { animation: gmspin 1s linear infinite; }
+    @keyframes gmspin { to { transform: rotate(360deg); } }
+
+    /* Tombol lapisan (Peta / Satelit) kiri bawah */
+    .gm-layer {
+      position: absolute; left: 10px; bottom: 28px; z-index: 1000;
+      width: 64px; height: 64px; border-radius: 8px; border: 2px solid #fff; cursor: pointer;
+      box-shadow: 0 2px 6px rgba(60,64,67,.4); overflow: hidden; padding: 0; background: #ccc;
     }
+    .gm-layer .thumb { position: absolute; inset: 0; background-size: cover; background-position: center; }
+    .gm-layer .thumb.sat { background: linear-gradient(135deg, #2d4a2b 0%, #4f6b3a 40%, #2b4a63 100%); }
+    .gm-layer .thumb.map { background: linear-gradient(135deg, #e8eaed 0%, #c8e6c9 45%, #aadaff 100%); }
+    .gm-layer .lbl {
+      position: absolute; left: 0; right: 0; bottom: 0; padding: 2px 0; text-align: center;
+      font-size: .66rem; font-weight: 700; color: #fff; background: rgba(0,0,0,.55);
+    }
+
+    /* Kartu info koordinat bawah */
+    .gm-card {
+      position: absolute; left: 84px; right: 62px; bottom: 28px; z-index: 1000;
+      background: #fff; border-radius: 10px; padding: 8px 12px; color: #202124;
+      box-shadow: 0 2px 6px rgba(60,64,67,.3); font-size: .74rem; line-height: 1.35;
+      display: none; min-height: 40px;
+    }
+    .gm-card .t { font-weight: 700; font-size: .8rem; color: #202124; }
+    .gm-card .c { color: #5f6368; }
+
+    /* Pin merah ala Google */
+    .gm-pin { filter: drop-shadow(0 2px 3px rgba(0,0,0,.4)); }
+    .gm-pin-drop { animation: gmdrop .35s ease-out; }
+    @keyframes gmdrop { from { transform: translateY(-24px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    .leaflet-control-attribution { font-size: 10px !important; background: rgba(255,255,255,.8) !important; color: #5f6368 !important; }
+    .leaflet-control-attribution a { color: #1a73e8 !important; }
   </style>
 </head>
 <body>
 
   <div class="app-container">
-    
+
     <header class="header">
       <div class="header-badge">Humas Presisi</div>
       <h1>POLSEK JATIROGO</h1>
@@ -517,7 +266,7 @@
     </div>
 
     <div class="card">
-      
+
       <!-- FOTO KEGIATAN -->
       <div class="form-group">
         <div class="form-label">
@@ -530,19 +279,16 @@
             <span class="status" id="label1">+ Pilih Foto</span>
             <input type="file" id="foto1" accept="image/*" />
           </div>
-
           <div class="photo-btn" id="card2">
             <span class="title">Foto 2</span>
             <span class="status" id="label2">+ Pilih Foto</span>
             <input type="file" id="foto2" accept="image/*" />
           </div>
-
           <div class="photo-btn" id="card3">
             <span class="title">Foto 3</span>
             <span class="status" id="label3">+ Pilih Foto</span>
             <input type="file" id="foto3" accept="image/*" />
           </div>
-
           <div class="photo-btn" id="card4">
             <span class="title">Foto 4</span>
             <span class="status" id="label4">+ Pilih Foto</span>
@@ -571,7 +317,7 @@
           <span>Keterangan Kegiatan</span>
           <span class="hint">Pilih template / edit</span>
         </div>
-        
+
         <select id="templateSelector">
           <option value="" selected disabled>-- Pilih Template Kegiatan Polsek Jatirogo --</option>
           <option value="POLSEK JATIROGO MELAKSANAKAN GIAT OPS OFFENSIF DI DEPAN MAPOLSEK JATIROGO DI PIMPIN OLEH KAPOLSEK JATIROGO IPTU.M ARIF NUGROHO,S.H.">1. Giat Ops Offensif di Depan Mapolsek</option>
@@ -595,9 +341,7 @@
 
       <!-- TANGGAL -->
       <div class="form-group">
-        <div class="form-label">
-          <span>Tanggal Kegiatan</span>
-        </div>
+        <div class="form-label"><span>Tanggal Kegiatan</span></div>
         <div class="date-row">
           <input type="text" id="tanggal" placeholder="Contoh: Sabtu, 26 September 2026" />
           <button type="button" class="btn-today" onclick="setTodayDate()">Hari Ini</button>
@@ -612,30 +356,36 @@
         </div>
 
         <label class="gps-check"><input type="checkbox" id="gpsOn" checked> Tampilkan keterangan GPS di pojok kanan bawah tiap foto</label>
-        
-        <div class="map-hint">💡 Cari lokasi atau klik di peta untuk memilih koordinat otomatis</div>
-        
-        <div class="map-search-wrapper">
-          <input 
-            type="text" 
-            id="mapSearchBox" 
-            class="map-search-box" 
-            placeholder="🔍 Cari lokasi... (contoh: Jatirogo, Surabaya, dll)"
-          />
-          <div class="search-results" id="searchResults"></div>
-        </div>
-        
-        <div class="gps-map-container">
+
+        <div class="map-hint">💡 Peta dibatasi wilayah Kabupaten Tuban. Cari lokasi, klik peta, atau tekan tombol target untuk memakai lokasi Anda.</div>
+
+        <div class="gmap-wrap">
           <div id="gpsMap"></div>
-          <div class="map-info-box" id="mapInfoBox" style="display:none;">
-            <div><span class="map-info-label">Latitude</span></div>
-            <div class="map-info-value" id="mapLat">-</div>
-            <div style="margin-top: 0.5rem;"><span class="map-info-label">Longitude</span></div>
-            <div class="map-info-value" id="mapLng">-</div>
+
+          <div class="gm-search" id="gmSearch">
+            <div class="gm-search-bar">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#5f6368"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+              <input type="text" id="mapSearchBox" placeholder="Cari di Kabupaten Tuban" autocomplete="off" />
+              <button type="button" class="gm-clear" id="gmClear" aria-label="Hapus">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+              </button>
+            </div>
+            <div class="search-results" id="searchResults"></div>
+          </div>
+
+          <button type="button" class="gm-layer" id="gmLayerBtn" aria-label="Ganti tampilan peta">
+            <div class="thumb sat" id="gmLayerThumb"></div>
+            <div class="lbl" id="gmLayerLbl">Satelit</div>
+          </button>
+
+          <div class="gm-card" id="mapInfoBox">
+            <div class="t" id="mapPlace">Lokasi dipilih</div>
+            <div class="c" id="mapCoord">-</div>
           </div>
         </div>
 
         <input type="text" id="gpsLokasi" value="Kecamatan Jatirogo, Kabupaten Tuban 62362" placeholder="Baris lokasi (kecamatan, kabupaten, kode pos)" style="margin-bottom:.5rem" />
+        <label class="gps-check"><input type="checkbox" id="autoLokasi" checked> Isi baris lokasi otomatis saat memilih titik di peta</label>
         <input type="text" id="gpsNegara" value="Indonesia" placeholder="Baris terakhir (negara)" style="margin-bottom:.5rem" />
 
         <select id="gpsTz">
@@ -675,23 +425,17 @@
         <button type="button" class="btn-today" style="padding:.6rem .85rem;margin-top:.2rem" onclick="setJamSekarang()">Isi Jam Sekarang (semua foto)</button>
       </div>
 
-      <button class="btn-generate" id="generateBtn">
-        ⚡ Buat Dokumentasi
-      </button>
+      <button class="btn-generate" id="generateBtn">⚡ Buat Dokumentasi</button>
 
     </div>
 
     <!-- PREVIEW AREA -->
     <div class="preview-card" id="previewContainer">
       <div class="preview-title">Hasil Dokumentasi</div>
-      
       <canvas id="outputCanvas" width="1080" height="1136"></canvas>
       <img id="resultImage" alt="Hasil Dokumentasi" />
-
       <div class="action-group">
-        <a id="btnDownloadLink" class="btn-download-direct" download="Dokumentasi_Polsek_Jatirogo.png">
-          📥 Unduh Gambar (HD)
-        </a>
+        <a id="btnDownloadLink" class="btn-download-direct" download="Dokumentasi_Polsek_Jatirogo.png">📥 Unduh Gambar (HD)</a>
       </div>
     </div>
 
@@ -701,182 +445,310 @@
 
   </div>
 
-  <!-- Leaflet JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 
   <script>
-    // --- LOGIKA INISIALISASI MAP GPS ---
+    // =====================================================
+    //  PETA GAYA GOOGLE MAPS - DIBATASI KABUPATEN TUBAN
+    // =====================================================
+    // Perkiraan kotak batas Kabupaten Tuban (LS 6°40'-7°18', BT 111°30'-112°35')
+    const TUBAN_BOUNDS = L.latLngBounds([-7.30, 111.50], [-6.65, 112.60]);
+    const defaultLat = -6.76;  // perkiraan Jatirogo; klik peta untuk menyesuaikan
+    const defaultLng = 111.92;
+
     let mapInstance = null;
     let mapMarker = null;
-    const defaultLat = -6.8733; // Jatirogo, Tuban
-    const defaultLng = 112.0276;
-    
+    let baseLayers = {};
+    let currentBase = "map";
+
+    const PIN_SVG = '<svg class="gm-pin gm-pin-drop" width="32" height="44" viewBox="0 0 32 44" xmlns="http://www.w3.org/2000/svg">' +
+      '<path d="M16 0C7.2 0 0 7 0 15.7 0 27.5 16 44 16 44s16-16.5 16-28.3C32 7 24.8 0 16 0z" fill="#EA4335"/>' +
+      '<path d="M16 0C7.2 0 0 7 0 15.7 0 27.5 16 44 16 44V0z" fill="#C5221F" opacity=".18"/>' +
+      '<circle cx="16" cy="15.5" r="6" fill="#7B1511"/></svg>';
+
+    function inTuban(lat, lng) {
+      return TUBAN_BOUNDS.contains([lat, lng]);
+    }
+
     function initializeMap() {
-      if (mapInstance) return; // Cegah inisialisasi ganda
-      
-      // Buat map
-      mapInstance = L.map('gpsMap').setView([defaultLat, defaultLng], 13);
-      
-      // Tambah tile layer (Stamen Toner Lite - 100% gratis, no API key)
-      L.tileLayer('https://{s}.tile.stamen.com/toner-lite/{z}/{x}/{y}.png', {
-        attribution: '© Stamen Design, © OpenStreetMap contributors',
-        maxZoom: 20,
-        className: 'map-tiles',
-        subdomains: 'abcd'
-      }).addTo(mapInstance);
-      
-      // Buat marker default di Jatirogo
-      mapMarker = L.circleMarker([defaultLat, defaultLng], {
-        color: '#e11d48',
-        fill: true,
-        fillColor: '#fb7185',
-        fillOpacity: 0.7,
-        weight: 2,
-        radius: 8
-      }).addTo(mapInstance);
-      
-      // Handle click pada map
-      mapInstance.on('click', function(e) {
-        const lat = e.latlng.lat.toFixed(6);
-        const lng = e.latlng.lng.toFixed(6);
-        
-        // Update marker position
-        mapMarker.setLatLng([lat, lng]);
-        
-        // Update input fields untuk koordinat semua foto
-        document.getElementById('gpsLatAll').value = lat;
-        document.getElementById('gpsLngAll').value = lng;
-        document.getElementById('gpsCoordOn').checked = true;
-        
-        // Trigger event agar template jam terupdate
-        document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
-        document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
-        
-        // Update info box
-        updateMapInfo(lat, lng);
+      if (mapInstance) return;
+
+      mapInstance = L.map('gpsMap', {
+        zoomControl: false,
+        attributionControl: true,
+        maxBounds: TUBAN_BOUNDS.pad(0.05),
+        maxBoundsViscosity: 1.0,
+        minZoom: 9,
+        maxZoom: 19
+      }).setView([defaultLat, defaultLng], 12);
+
+      mapInstance.attributionControl.setPrefix(false);
+
+      // Peta jalan (bergaya Google Maps) - CARTO Voyager, gratis tanpa API key
+      const voyager = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+        attribution: '© OpenStreetMap © CARTO',
+        subdomains: 'abcd',
+        maxZoom: 19
       });
-      
-      // Update info box dengan posisi default
-      updateMapInfo(defaultLat, defaultLng);
-      
-      // Tampilkan info box
-      document.getElementById('mapInfoBox').style.display = 'block';
+
+      // Satelit + label
+      const satellite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+        attribution: 'Tiles © Esri',
+        maxZoom: 19
+      });
+      const labels = L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager_only_labels/{z}/{x}/{y}{r}.png', {
+        subdomains: 'abcd',
+        maxZoom: 19,
+        pane: 'overlayPane'
+      });
+
+      baseLayers.map = L.layerGroup([voyager]);
+      baseLayers.sat = L.layerGroup([satellite, labels]);
+      baseLayers.map.addTo(mapInstance);
+
+      // Kontrol zoom + tombol lokasi saya (kanan bawah)
+      L.control.zoom({ position: 'bottomright' }).addTo(mapInstance);
+      const LocateControl = L.Control.extend({
+        options: { position: 'bottomright' },
+        onAdd: function () {
+          const btn = L.DomUtil.create('button', 'gm-btn');
+          btn.type = 'button';
+          btn.id = 'gmLocateBtn';
+          btn.setAttribute('aria-label', 'Lokasi saya');
+          btn.innerHTML = '<svg width="22" height="22" viewBox="0 0 24 24" fill="#5f6368"><path d="M12 8c-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4-1.79-4-4-4zm8.94 3A8.994 8.994 0 0 0 13 3.06V1h-2v2.06A8.994 8.994 0 0 0 3.06 11H1v2h2.06A8.994 8.994 0 0 0 11 20.94V23h2v-2.06A8.994 8.994 0 0 0 20.94 13H23v-2h-2.06zM12 19c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>';
+          L.DomEvent.disableClickPropagation(btn);
+          L.DomEvent.on(btn, 'click', locateMe);
+          return btn;
+        }
+      });
+      new LocateControl().addTo(mapInstance);
+
+      // Pin merah ala Google
+      const pinIcon = L.divIcon({
+        className: '',
+        html: PIN_SVG,
+        iconSize: [32, 44],
+        iconAnchor: [16, 44]
+      });
+      mapMarker = L.marker([defaultLat, defaultLng], { icon: pinIcon, draggable: true }).addTo(mapInstance);
+
+      // Geser pin
+      mapMarker.on('dragend', function () {
+        const p = mapMarker.getLatLng();
+        if (!inTuban(p.lat, p.lng)) {
+          alert('Lokasi di luar wilayah Kabupaten Tuban.');
+          mapMarker.setLatLng([defaultLat, defaultLng]);
+          return;
+        }
+        pickLocation(p.lat, p.lng, false);
+      });
+
+      // Klik peta
+      mapInstance.on('click', function (e) {
+        if (!inTuban(e.latlng.lat, e.latlng.lng)) {
+          alert('Lokasi di luar wilayah Kabupaten Tuban.');
+          return;
+        }
+        mapMarker.setLatLng(e.latlng);
+        pickLocation(e.latlng.lat, e.latlng.lng, false);
+      });
+
+      // Ganti lapisan Peta / Satelit
+      const layerBtn = document.getElementById('gmLayerBtn');
+      L.DomEvent.disableClickPropagation(layerBtn);
+      layerBtn.addEventListener('click', toggleBase);
+
+      // Cegah klik di kotak pencarian menggeser peta
+      L.DomEvent.disableClickPropagation(document.getElementById('gmSearch'));
+      L.DomEvent.disableScrollPropagation(document.getElementById('searchResults'));
+
+      showInfo('Jatirogo (perkiraan)', defaultLat, defaultLng);
+
+      setTimeout(() => mapInstance.invalidateSize(), 300);
+      window.addEventListener('resize', () => mapInstance && mapInstance.invalidateSize());
     }
-    
-    function updateMapInfo(lat, lng) {
-      document.getElementById('mapLat').textContent = lat;
-      document.getElementById('mapLng').textContent = lng;
-    }
-    
-    // Inisialisasi map saat DOM siap
-    document.addEventListener('DOMContentLoaded', function() {
-      setTimeout(initializeMap, 100);
-    });
-    
-    // Jika input koordinat diubah manual, update marker di map
-    document.getElementById('gpsLatAll').addEventListener('input', function() {
-      updateMapMarkerFromInput();
-    });
-    
-    document.getElementById('gpsLngAll').addEventListener('input', function() {
-      updateMapMarkerFromInput();
-    });
-    
-    function updateMapMarkerFromInput() {
-      const lat = parseFloat(document.getElementById('gpsLatAll').value);
-      const lng = parseFloat(document.getElementById('gpsLngAll').value);
-      
-      if (!isNaN(lat) && !isNaN(lng) && mapInstance && mapMarker) {
-        mapMarker.setLatLng([lat, lng]);
-        mapInstance.setView([lat, lng], 13);
-        updateMapInfo(lat.toFixed(6), lng.toFixed(6));
+
+    function toggleBase() {
+      const thumb = document.getElementById('gmLayerThumb');
+      const lbl = document.getElementById('gmLayerLbl');
+      if (currentBase === 'map') {
+        mapInstance.removeLayer(baseLayers.map);
+        baseLayers.sat.addTo(mapInstance);
+        currentBase = 'sat';
+        thumb.className = 'thumb map';
+        lbl.textContent = 'Peta';
+      } else {
+        mapInstance.removeLayer(baseLayers.sat);
+        baseLayers.map.addTo(mapInstance);
+        currentBase = 'map';
+        thumb.className = 'thumb sat';
+        lbl.textContent = 'Satelit';
       }
     }
-    
-    // --- LOGIKA SEARCH LOKASI ---
+
+    function showInfo(title, lat, lng) {
+      document.getElementById('mapPlace').textContent = title;
+      document.getElementById('mapCoord').textContent = `${Number(lat).toFixed(6)}, ${Number(lng).toFixed(6)}`;
+      document.getElementById('mapInfoBox').style.display = 'block';
+    }
+
+    // Dipanggil saat titik dipilih (klik, geser pin, pencarian, GPS)
+    function pickLocation(lat, lng, recenter, title) {
+      lat = parseFloat(lat); lng = parseFloat(lng);
+      const latS = lat.toFixed(6), lngS = lng.toFixed(6);
+
+      document.getElementById('gpsLatAll').value = latS;
+      document.getElementById('gpsLngAll').value = lngS;
+      document.getElementById('gpsCoordOn').checked = true;
+
+      mapMarker.setLatLng([lat, lng]);
+      if (recenter) mapInstance.setView([lat, lng], Math.max(mapInstance.getZoom(), 15));
+      else mapInstance.panTo([lat, lng]);
+
+      showInfo(title || 'Memuat nama lokasi...', lat, lng);
+
+      // Hitung ulang template jam (jika dipilih)
+      document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
+      document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
+
+      reverseGeocode(lat, lng, title);
+    }
+
+    // Nama lokasi dari koordinat (Nominatim / OpenStreetMap)
+    let revToken = 0;
+    function reverseGeocode(lat, lng, knownTitle) {
+      const token = ++revToken;
+      const url = `https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=16&accept-language=id&lat=${lat}&lon=${lng}`;
+      fetch(url)
+        .then(r => r.json())
+        .then(d => {
+          if (token !== revToken || !d || !d.address) return;
+          const a = d.address;
+          const nama = knownTitle || a.road || a.village || a.hamlet || a.suburb || (d.display_name || '').split(',')[0] || 'Lokasi dipilih';
+          showInfo(nama, lat, lng);
+
+          if (!document.getElementById('autoLokasi').checked) return;
+          let kec = a.city_district || a.suburb || a.municipality || a.town || '';
+          let kab = a.county || a.regency || a.city || '';
+          if (!kec || !kab) return;
+          if (!/^kecamatan/i.test(kec)) kec = 'Kecamatan ' + kec;
+          if (!/^(kabupaten|kota)/i.test(kab)) kab = 'Kabupaten ' + kab;
+          document.getElementById('gpsLokasi').value = `${kec}, ${kab}${a.postcode ? ' ' + a.postcode : ''}`;
+        })
+        .catch(() => {
+          if (token === revToken) showInfo(knownTitle || 'Lokasi dipilih', lat, lng);
+        });
+    }
+
+    // Tombol "Lokasi saya"
+    function locateMe() {
+      if (!navigator.geolocation) { alert('Perangkat tidak mendukung GPS.'); return; }
+      const btn = document.getElementById('gmLocateBtn');
+      btn.classList.add('busy');
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          btn.classList.remove('busy');
+          const lat = pos.coords.latitude, lng = pos.coords.longitude;
+          if (!inTuban(lat, lng)) { alert('Lokasi Anda berada di luar wilayah Kabupaten Tuban.'); return; }
+          pickLocation(lat, lng, true, 'Lokasi saya');
+        },
+        () => { btn.classList.remove('busy'); alert('Gagal mengambil lokasi. Pastikan izin lokasi aktif.'); },
+        { enableHighAccuracy: true, timeout: 12000 }
+      );
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(initializeMap, 100);
+    });
+
+    // Koordinat diubah manual -> pin ikut bergeser
+    ['gpsLatAll', 'gpsLngAll'].forEach((id) => {
+      document.getElementById(id).addEventListener('input', updateMapMarkerFromInput);
+    });
+
+    function updateMapMarkerFromInput() {
+      const lat = parseFloat(String(document.getElementById('gpsLatAll').value).replace(',', '.'));
+      const lng = parseFloat(String(document.getElementById('gpsLngAll').value).replace(',', '.'));
+      if (!isNaN(lat) && !isNaN(lng) && inTuban(lat, lng) && mapInstance && mapMarker) {
+        mapMarker.setLatLng([lat, lng]);
+        mapInstance.panTo([lat, lng]);
+        showInfo('Lokasi dipilih', lat, lng);
+      }
+    }
+
+    // --- PENCARIAN LOKASI (terbatas Kabupaten Tuban) ---
     let searchTimeout;
     const searchBox = document.getElementById('mapSearchBox');
     const searchResults = document.getElementById('searchResults');
-    
-    searchBox.addEventListener('input', function(e) {
+    const gmClear = document.getElementById('gmClear');
+    const PIN_SMALL = '<svg class="pin" width="18" height="18" viewBox="0 0 24 24" fill="#5f6368"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 0 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>';
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    searchBox.addEventListener('input', function (e) {
       clearTimeout(searchTimeout);
       const query = e.target.value.trim();
-      
-      if (query.length < 2) {
-        searchResults.classList.remove('active');
-        return;
-      }
-      
-      searchResults.innerHTML = '<div class="search-loading">🔍 Searching...</div>';
+      gmClear.style.display = query ? 'flex' : 'none';
+
+      if (query.length < 2) { searchResults.classList.remove('active'); return; }
+
+      searchResults.innerHTML = '<div class="search-loading">Mencari...</div>';
       searchResults.classList.add('active');
-      
-      searchTimeout = setTimeout(function() {
-        searchLocations(query);
-      }, 500);
+      searchTimeout = setTimeout(() => searchLocations(query), 500);
     });
-    
+
+    gmClear.addEventListener('click', function () {
+      searchBox.value = '';
+      gmClear.style.display = 'none';
+      searchResults.classList.remove('active');
+      searchBox.focus();
+    });
+
     function searchLocations(query) {
-      // Gunakan Nominatim API (OpenStreetMap's geocoding service - gratis, no API key)
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=8`;
-      
+      const url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&accept-language=id&viewbox=111.50,-6.65,112.60,-7.30&bounded=1&q=${encodeURIComponent(query)}&limit=8`;
+
       fetch(url)
-        .then(response => response.json())
+        .then(r => r.json())
         .then(data => {
-          if (data.length === 0) {
-            searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil ditemukan</div>';
+          const hasil = data.filter(it => inTuban(parseFloat(it.lat), parseFloat(it.lon)));
+          if (hasil.length === 0) {
+            searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil di Kabupaten Tuban</div>';
             return;
           }
-          
           searchResults.innerHTML = '';
-          data.forEach(item => {
+          hasil.forEach(item => {
+            const parts = (item.display_name || '').split(',');
+            const title = item.name || parts[0];
+            const rest = parts.slice(1, 4).join(',').trim();
             const div = document.createElement('div');
             div.className = 'search-item';
-            div.innerHTML = `<strong>${item.name}</strong><br/><small>${item.address || item.display_name}</small>`;
-            div.addEventListener('click', function() {
-              selectSearchResult(item);
-            });
+            div.innerHTML = `${PIN_SMALL}<div><strong>${escapeHtml(title)}</strong><small>${escapeHtml(rest)}</small></div>`;
+            div.addEventListener('click', () => selectSearchResult(item, title));
             searchResults.appendChild(div);
           });
         })
-        .catch(err => {
-          console.error('Search error:', err);
-          searchResults.innerHTML = '<div class="search-loading">Error searching...</div>';
+        .catch(() => {
+          searchResults.innerHTML = '<div class="search-loading">Gagal mencari. Periksa koneksi internet.</div>';
         });
     }
-    
-    function selectSearchResult(item) {
-      const lat = parseFloat(item.lat).toFixed(6);
-      const lng = parseFloat(item.lon).toFixed(6);
-      
-      // Update input fields
-      document.getElementById('gpsLatAll').value = lat;
-      document.getElementById('gpsLngAll').value = lng;
-      document.getElementById('gpsCoordOn').checked = true;
-      
-      // Update map dan marker
-      if (mapInstance && mapMarker) {
-        mapMarker.setLatLng([lat, lng]);
-        mapInstance.setView([lat, lng], 13);
-        updateMapInfo(lat, lng);
-      }
-      
-      // Clear search
-      searchBox.value = '';
+
+    function selectSearchResult(item, title) {
+      searchBox.value = title;
       searchResults.classList.remove('active');
-      
-      // Trigger event untuk update template jam
-      document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
-      document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
+      pickLocation(item.lat, item.lon, true, title);
     }
-    
-    // Close search results saat klik di luar
-    document.addEventListener('click', function(e) {
+
+    document.addEventListener('click', function (e) {
       if (e.target !== searchBox && !searchResults.contains(e.target)) {
         searchResults.classList.remove('active');
       }
     });
 
-    // --- LOGIKA GENERATOR DOKUMENTASI ---
+    // =====================================================
+    //  LOGIKA GENERATOR DOKUMENTASI
+    // =====================================================
     const canvas = document.getElementById("outputCanvas");
     const ctx = canvas.getContext("2d");
     const previewContainer = document.getElementById("previewContainer");
@@ -921,7 +793,8 @@
       document.getElementById("tanggal").value = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
     }
 
-    let cachedFrameData = localStorage.getItem("polresta_frame_data");
+    let cachedFrameData = null;
+    try { cachedFrameData = localStorage.getItem("polresta_frame_data"); } catch (e) {}
 
     function updateFrameStatus() {
       if (cachedFrameData) {
@@ -1018,14 +891,13 @@
       return `${pad2(d.getHours())}.${pad2(d.getMinutes())}`;
     }
 
-    // Jam dan menit saja (buang detik jika ada)
     function fixJam(s) {
       const p = String(s).replace(/[:\s]/g, ".").split(".").filter(Boolean);
       return p.length >= 2 ? `${pad2(p[0])}.${pad2(p[1])}` : String(s);
     }
 
     // --- JADWAL SHOLAT (metode Kemenag RI: Subuh 20 derajat, Isya 18 derajat, ihtiyath +2 menit) ---
-    const JATIROGO = { lat: -6.5333, lng: 111.9167 };
+    const JATIROGO = { lat: -6.76, lng: 111.92 };
     const BULAN = { januari:1, februari:2, maret:3, april:4, mei:5, juni:6, juli:7, agustus:8, september:9, oktober:10, november:11, desember:12,
                     jan:1, feb:2, mar:3, apr:4, jun:6, jul:7, agu:8, agt:8, sep:9, okt:10, nov:11, des:12 };
 
@@ -1072,7 +944,7 @@
         isya: atAngle(18, 18 / 24, false)
       };
       const out = {};
-      for (const k in T) out[k] = Math.ceil((T[k] + adj) * 60 + 2 - 1e-9); // menit sejak 00.00, +2 menit ihtiyath
+      for (const k in T) out[k] = Math.ceil((T[k] + adj) * 60 + 2 - 1e-9);
       out.jumat = out.dzuhur;
       return out;
     }
@@ -1098,9 +970,9 @@
       const tz = tzMap[document.getElementById("gpsTz").value] || 7;
       const lat = parseCoord(document.getElementById("gpsLatAll").value);
       const lng = parseCoord(document.getElementById("gpsLngAll").value);
-      const L = (lat !== null && lng !== null) ? { lat, lng } : JATIROGO;
+      const L_ = (lat !== null && lng !== null) ? { lat, lng } : JATIROGO;
       const t = tanggalDipakai();
-      const pt = prayerTimes(t.y, t.m, t.d, L.lat, L.lng, tz);
+      const pt = prayerTimes(t.y, t.m, t.d, L_.lat, L_.lng, tz);
       const off = parseInt(document.getElementById("jamOffset").value) || 0;
       const step = parseInt(document.getElementById("jamStep").value) || 0;
 
@@ -1156,7 +1028,6 @@
       const lh = Math.round(fs * 1.22);
       const pad = Math.round(dw * 0.02);
 
-      // gradasi tipis agar teks tetap terbaca di latar terang
       const gh = lines.length * lh + pad * 2;
       const g = ctx.createLinearGradient(0, dy + dh - gh, 0, dy + dh);
       g.addColorStop(0, "rgba(0,0,0,0)");
@@ -1321,7 +1192,6 @@
         readImageFile(f4)
       ]);
 
-      // Pasang keterangan GPS ke masing-masing foto
       const gpsOn = document.getElementById("gpsOn").checked;
       [img1, img2, img3, img4].forEach((im, i) => {
         if (im) im._stamp = gpsOn ? buildGpsStamp(i + 1, tanggalText.trim()) : null;
@@ -1334,7 +1204,6 @@
 
       ctx.clearRect(0, 0, W, H);
 
-      // 1. Gambar Bingkai Utama Sebagai Latar Belakang
       if (frameImg) {
         ctx.drawImage(frameImg, 0, 0, W, H);
       } else {
@@ -1342,24 +1211,21 @@
         ctx.fillRect(0, 0, W, H);
       }
 
-      // 2. BATAS AREA FOTO PRESISI DI DALAM BINGKAI MERAH
       const contentX = 32;
       const contentY = 282;
       const contentW = 1016;
       const contentH = 598;
       const gap = 6;
 
-      // 3. Potong & Render Foto Tepat Mengisi Area Bingkai
       ctx.save();
       ctx.beginPath();
       ctx.rect(contentX, contentY, contentW, contentH);
-      ctx.clip(); // Potong canvas agar foto rapi di dalam batas bingkai
+      ctx.clip();
 
       const activePhotos = [img1, img2, img3, img4].filter(img => img !== null);
       renderPhotoGrid(ctx, activePhotos, layoutMode, contentX, contentY, contentW, contentH, gap);
       ctx.restore();
 
-      // 4. Render Teks Deskripsi
       if (deskripsiText.trim()) {
         ctx.fillStyle = "#ffffff";
         ctx.shadowColor = "rgba(0, 0, 0, 0.95)";
@@ -1367,42 +1233,32 @@
         ctx.shadowOffsetX = 1;
         ctx.shadowOffsetY = 1;
 
-        const textZoneTop = 900;
-        const textZoneBottom = 1050;
-        const initialSize = 30;
-
         drawAutoFitText(
           ctx,
           deskripsiText.toUpperCase(),
           Math.round(W / 2),
-          textZoneTop,
-          textZoneBottom,
+          900,
+          1050,
           Math.round(W * 0.88),
-          initialSize
+          30
         );
 
         ctx.shadowColor = "transparent";
         ctx.shadowBlur = 0;
       }
 
-      // 5. Render Tanggal Kegiatan
       if (tanggalText.trim()) {
-        const dateFontSize = 24;
         ctx.fillStyle = "#ffffff";
         ctx.textAlign = "left";
         ctx.textBaseline = "middle";
-        ctx.font = `bold ${dateFontSize}px Arial, "Segoe UI", sans-serif`;
-
+        ctx.font = `bold 24px Arial, "Segoe UI", sans-serif`;
         ctx.shadowColor = "rgba(0, 0, 0, 0.75)";
         ctx.shadowBlur = 2;
-
         ctx.fillText(tanggalText, 55, 1108);
-
         ctx.shadowColor = "transparent";
         ctx.shadowBlur = 0;
       }
 
-      // Output hasil gambar ke HTML
       canvas.toBlob((blob) => {
         if (!blob) return;
         const blobUrl = URL.createObjectURL(blob);
