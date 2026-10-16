@@ -315,6 +315,8 @@
           <option value="POLSEK JATIROGO MENINDAK LANJUTI LAPORAN DARI MASYARAKAT LEWAT CALL CENTER 110 LAPORAN ADANYA ">11. Tindak Lanjut Call Center 110</option>
           <option value="POLSEK JATIROGO MELAKSANAKAN TPTKP KEJADIAN LAKA LANTAS DI JALAN ">12. TPTKP Kejadian Laka Lantas di Jalan</option>
           <option value="POLSEK JATIROGO MELAKSANAKAN SERAH TERIMA TUGAS DAN TANGGUNG JAWAB PENJAGAAN DARI PETUGAS JAGA LAMA KEPADA PETUGAS JAGA BARU DALAM KEADAAN AMAN">13. Serah Terima Tugas Jaga Penjagaan</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN GIAT OPS MIRAS DALAM RANGKA HARKAMTIBMAS DI WILAYAH KEC. JATIROGO">14. Giat Ops Miras dalam rangka Harkamtibmas</option>
+          <option value="POLSEK JATIROGO MELAKSANAKAN GIAT JUMLING (JUMAT KELILING) DI MASJID">15. Giat Jumling (Jumat Keliling) di Masjid</option>
           <option value="CLEAR">-- Ketik Manual Sendiri (Kosongkan) --</option>
         </select>
 
@@ -339,7 +341,7 @@
 
         <label class="gps-check"><input type="checkbox" id="gpsOn" checked> Tampilkan keterangan GPS di pojok kanan bawah tiap foto</label>
 
-        <div class="map-hint">💡 Peta satelit dibatasi wilayah Kabupaten Tuban. Hasil pencarian diprioritaskan untuk Kecamatan Jatirogo. Cari lokasi, klik peta, atau tekan tombol target untuk memakai lokasi Anda.</div>
+        <div class="map-hint">💡 Titik awal diarahkan ke Polsek Jatirogo. Pencarian mencoba beberapa kata kunci dan area, dengan hasil di Kabupaten Tuban diprioritaskan. Cari lokasi, klik peta, atau tekan tombol target untuk memakai lokasi Anda.</div>
 
         <div class="gmap-wrap">
           <div id="gpsMap"></div>
@@ -347,7 +349,7 @@
           <div class="gm-search" id="gmSearch">
             <div class="gm-search-bar">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="#5f6368"><path d="M15.5 14h-.79l-.28-.27A6.47 6.47 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
-              <input type="text" id="mapSearchBox" placeholder="Cari di Jatirogo / Kabupaten Tuban" autocomplete="off" />
+              <input type="text" id="mapSearchBox" placeholder="Cari nama tempat, alamat, masjid, desa, atau patokan..." autocomplete="off" />
               <button type="button" class="gm-clear" id="gmClear" aria-label="Hapus">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
               </button>
@@ -361,7 +363,7 @@
           </div>
         </div>
 
-        <input type="text" id="gpsLokasi" value="Kecamatan Jatirogo, Kabupaten Tuban 62362" placeholder="Baris lokasi (kecamatan, kabupaten, kode pos)" style="margin-bottom:.5rem" />
+        <input type="text" id="gpsLokasi" value="Polsek Jatirogo, Kecamatan Jatirogo, Kabupaten Tuban 62362" placeholder="Baris lokasi (kecamatan, kabupaten, kode pos)" style="margin-bottom:.5rem" />
         <label class="gps-check"><input type="checkbox" id="autoLokasi" checked> Isi baris lokasi otomatis saat memilih titik di peta</label>
         <input type="text" id="gpsNegara" value="Indonesia" placeholder="Baris terakhir (negara)" style="margin-bottom:.5rem" />
 
@@ -416,10 +418,10 @@
     // Perkiraan kotak batas Kabupaten Tuban (LS 6°40'-7°18', BT 111°30'-112°35')
     const TUBAN_BOUNDS = L.latLngBounds([-7.30, 111.50], [-6.65, 112.60]);
     // Pusat pencarian prioritas: Kecamatan Jatirogo
-    const defaultLat = -6.76;  // perkiraan Jatirogo; klik peta untuk menyesuaikan
-    const defaultLng = 111.92;
+    const defaultLat = -6.8859;  // pusat Jatirogo; pin awal diarahkan ke Polsek Jatirogo
+    const defaultLng = 111.6584;
     // Kotak prioritas Kecamatan Jatirogo (kiri, atas, kanan, bawah) untuk Nominatim viewbox
-    const JATIROGO_VIEWBOX = '111.78,-6.60,112.06,-6.92';
+    const JATIROGO_VIEWBOX = '111.55,-6.80,111.78,-6.98';
 
     let mapInstance = null;
     let mapMarker = null;
@@ -511,7 +513,17 @@
       L.DomEvent.disableClickPropagation(document.getElementById('gmSearch'));
       L.DomEvent.disableScrollPropagation(document.getElementById('searchResults'));
 
-      showInfo('Jatirogo (perkiraan)', defaultLat, defaultLng);
+      showInfo('Polsek Jatirogo (titik awal)', defaultLat, defaultLng);
+       nominatimSearch('Polsek Jatirogo, Tuban', null, false).then(rows => {
+         const exact = (rows || []).find(it => /polsek/i.test((it.name || '') + ' ' + (it.display_name || '')) && inTuban(parseFloat(it.lat), parseFloat(it.lon)));
+         if (exact && mapInstance && mapMarker) {
+           const lat = parseFloat(exact.lat), lng = parseFloat(exact.lon);
+           mapMarker.setLatLng([lat, lng]); mapInstance.setView([lat, lng], 17);
+           document.getElementById('gpsLatAll').value = lat.toFixed(6);
+           document.getElementById('gpsLngAll').value = lng.toFixed(6);
+           showInfo('Polsek Jatirogo', lat, lng);
+         }
+       }).catch(() => {});
 
       setTimeout(() => mapInstance.invalidateSize(), 300);
       window.addEventListener('resize', () => mapInstance && mapInstance.invalidateSize());
@@ -633,9 +645,10 @@
       searchBox.focus();
     });
 
-    function nominatimSearch(query, viewbox) {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&countrycodes=id&accept-language=id&viewbox=${viewbox}&bounded=1&q=${encodeURIComponent(query)}&limit=8`;
-      return fetch(url).then(r => r.json()).catch(() => []);
+    function nominatimSearch(query, viewbox, bounded = true) {
+      const box = viewbox ? `&viewbox=${viewbox}${bounded ? '&bounded=1' : ''}` : '';
+      const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1&countrycodes=id&accept-language=id&dedupe=0&limit=10${box}&q=${encodeURIComponent(query)}`;
+      return fetch(url).then(r => r.ok ? r.json() : []).catch(() => []);
     }
 
     function jarakKeJatirogo(item) {
@@ -644,51 +657,55 @@
       return Math.sqrt(dx * dx + dy * dy);
     }
 
-    function searchLocations(query) {
+    async function searchLocations(query) {
       const token = ++searchToken;
-
-      // Dua pencarian paralel: 1) khusus area Jatirogo, 2) seluruh Kabupaten Tuban
-      Promise.all([
-        nominatimSearch(query, JATIROGO_VIEWBOX),
-        nominatimSearch(query, '111.50,-6.65,112.60,-7.30')
-      ]).then(([dataJat, dataTuban]) => {
+      const variants = [
+        { q: query, box: JATIROGO_VIEWBOX },
+        { q: `${query}, Jatirogo, Tuban`, box: '111.50,-6.65,112.60,-7.30' },
+        { q: `${query}, Kabupaten Tuban`, box: '111.50,-6.65,112.60,-7.30' },
+        { q: query, box: '111.50,-6.65,112.60,-7.30' },
+        { q: query, box: null }
+      ];
+      const all = [], seen = new Set();
+      try {
+        for (const v of variants) {
+          if (token !== searchToken) return;
+          const data = await nominatimSearch(v.q, v.box, false);
+          for (const item of data || []) {
+            const lat = parseFloat(item.lat), lon = parseFloat(item.lon);
+            if (!Number.isFinite(lat) || !Number.isFinite(lon) || !inTuban(lat, lon)) continue;
+            const key = item.osm_type && item.osm_id ? `${item.osm_type}-${item.osm_id}` : `${lat.toFixed(5)},${lon.toFixed(5)},${item.display_name}`;
+            if (seen.has(key)) continue;
+            seen.add(key);
+            all.push({ item, prioritas: inJatirogoArea(lat, lon) });
+          }
+          if (all.length >= 10) break;
+        }
         if (token !== searchToken) return;
-
-        const seen = new Set();
-        const hasil = [];
-
-        // Hasil area Jatirogo lebih dulu, diurutkan dari yang terdekat ke pusat Jatirogo
-        dataJat
-          .filter(it => inTuban(parseFloat(it.lat), parseFloat(it.lon)))
-          .sort((a, b) => jarakKeJatirogo(a) - jarakKeJatirogo(b))
-          .forEach(it => { seen.add(it.place_id); hasil.push({ item: it, prioritas: true }); });
-
-        // Sisanya: hasil lain di Kabupaten Tuban, urut dari yang terdekat ke Jatirogo
-        dataTuban
-          .filter(it => !seen.has(it.place_id) && inTuban(parseFloat(it.lat), parseFloat(it.lon)))
-          .sort((a, b) => jarakKeJatirogo(a) - jarakKeJatirogo(b))
-          .forEach(it => { seen.add(it.place_id); hasil.push({ item: it, prioritas: false }); });
-
-        if (hasil.length === 0) {
-          searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil di Kabupaten Tuban</div>';
+        all.sort((a, b) => Number(b.prioritas) - Number(a.prioritas) || jarakKeJatirogo(a.item) - jarakKeJatirogo(b.item));
+        if (!all.length) {
+          searchResults.innerHTML = '<div class="search-loading">Belum ditemukan di Kabupaten Tuban. Coba nama desa/kecamatan, tambahkan kata “Jatirogo” atau gunakan ejaan lain.</div>';
           return;
         }
-
         searchResults.innerHTML = '';
-        hasil.slice(0, 10).forEach(({ item, prioritas }) => {
+        all.slice(0, 15).forEach(({ item, prioritas }) => {
           const parts = (item.display_name || '').split(',');
-          const title = item.name || parts[0];
-          const rest = parts.slice(1, 4).join(',').trim();
+          const title = item.name || parts[0] || query;
+          const rest = parts.slice(1, 5).join(',').trim();
           const div = document.createElement('div');
           div.className = 'search-item';
-          div.innerHTML = `${PIN_SMALL}<div><strong>${escapeHtml(title)}${prioritas ? '<span class="badge">Jatirogo</span>' : ''}</strong><small>${escapeHtml(rest)}</small></div>`;
+          div.innerHTML = `${PIN_SMALL}<div><strong>${escapeHtml(title)}${prioritas ? '<span class="badge">Jatirogo</span>' : ''}</strong><small>${escapeHtml(rest || item.display_name || '')}</small></div>`;
           div.addEventListener('click', () => selectSearchResult(item, title));
           searchResults.appendChild(div);
         });
-      }).catch(() => {
+      } catch {
         if (token !== searchToken) return;
-        searchResults.innerHTML = '<div class="search-loading">Gagal mencari. Periksa koneksi internet.</div>';
-      });
+        searchResults.innerHTML = '<div class="search-loading">Pencarian gagal. Periksa koneksi internet atau coba kata kunci yang lebih sederhana.</div>';
+      }
+    }
+
+    function inJatirogoArea(lat, lng) {
+      return lat >= -6.98 && lat <= -6.80 && lng >= 111.55 && lng <= 111.78;
     }
 
     function selectSearchResult(item, title) {
@@ -710,7 +727,6 @@
     const ctx = canvas.getContext("2d");
     const previewContainer = document.getElementById("previewContainer");
     const resultImage = document.getElementById("resultImage");
-    const btnDownloadLink = document.getElementById("btnDownloadLink");
     const templateSelector = document.getElementById("templateSelector");
     const deskripsiTextarea = document.getElementById("deskripsi");
 
@@ -959,48 +975,36 @@
       }
     }
 
-    // --- UNDUH FOTO SATUAN (tanpa bingkai, dengan label GPS) ---
+    // --- UNDUH SEMUA: hasil grid + foto satuan berlabel GPS ---
     let photoFiles = [];
-
     function canvasToBlob(c, type, q) {
       return new Promise((res) => c.toBlob(res, type, q));
     }
-
     async function buildPhotoDownloads(imgs) {
       photoFiles.forEach(f => URL.revokeObjectURL(f.url));
       photoFiles = [];
-      const box = document.getElementById("photoDownloads");
-      box.innerHTML = "";
-      const MAX = 2400; // sisi terpanjang maksimal
+      const MAX = 2400;
       for (let i = 0; i < imgs.length; i++) {
         const im = imgs[i];
         if (!im) continue;
         const sc = Math.min(1, MAX / Math.max(im.width, im.height));
         const w = Math.round(im.width * sc), h = Math.round(im.height * sc);
-        const c = document.createElement("canvas");
-        c.width = w; c.height = h;
-        const cx = c.getContext("2d");
-        cx.drawImage(im, 0, 0, w, h);
+        const c = document.createElement("canvas"); c.width = w; c.height = h;
+        const cx = c.getContext("2d"); cx.drawImage(im, 0, 0, w, h);
         if (im._stamp) drawGpsStamp(cx, im._stamp, 0, 0, w, h);
         const blob = await canvasToBlob(c, "image/jpeg", 0.92);
-        if (!blob) continue;
-        const url = URL.createObjectURL(blob);
-        const name = `Foto${i + 1}_Polsek_Jatirogo.jpg`;
-        photoFiles.push({ url, name });
-        const a = document.createElement("a");
-        a.href = url; a.download = name; a.textContent = `📥 Foto ${i + 1}`;
-        box.appendChild(a);
+        if (blob) photoFiles.push({ url: URL.createObjectURL(blob), name: `Foto${i + 1}_Polsek_Jatirogo_GPS.jpg` });
       }
+      const gridBlob = await canvasToBlob(canvas, "image/png");
+      if (gridBlob) photoFiles.unshift({ url: URL.createObjectURL(gridBlob), name: "Dokumentasi_Grid_Polsek_Jatirogo.png" });
     }
-
     document.getElementById("btnDownloadAll").addEventListener("click", () => {
-      if (!photoFiles.length) { alert("Belum ada foto. Klik Buat Dokumentasi dulu."); return; }
+      if (!photoFiles.length) { alert("Belum ada hasil. Pilih foto lalu klik Buat Dokumentasi terlebih dahulu."); return; }
       photoFiles.forEach((f, i) => {
         setTimeout(() => {
-          const a = document.createElement("a");
-          a.href = f.url; a.download = f.name;
+          const a = document.createElement("a"); a.href = f.url; a.download = f.name;
           document.body.appendChild(a); a.click(); a.remove();
-        }, i * 500);
+        }, i * 650);
       });
     });
 
@@ -1093,16 +1097,12 @@
         ctx.shadowBlur = 0;
       }
 
-      buildPhotoDownloads([img1, img2, img3, img4]);
-
-      canvas.toBlob((blob) => {
-        if (!blob) return;
-        const blobUrl = URL.createObjectURL(blob);
-        resultImage.src = blobUrl;
-        btnDownloadLink.href = blobUrl;
-        previewContainer.style.display = "block";
-        previewContainer.scrollIntoView({ behavior: "smooth" });
-      }, "image/png");
+      await buildPhotoDownloads([img1, img2, img3, img4]);
+      const blob = await canvasToBlob(canvas, "image/png");
+      if (!blob) { alert("Gagal membuat gambar. Coba lagi."); return; }
+      resultImage.src = URL.createObjectURL(blob);
+      previewContainer.style.display = "block";
+      previewContainer.scrollIntoView({ behavior: "smooth" });
     });
   </script>
 </body>
