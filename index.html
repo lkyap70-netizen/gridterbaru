@@ -635,10 +635,10 @@
       // Buat map
       mapInstance = L.map('gpsMap').setView([defaultLat, defaultLng], 13);
       
-      // Tambah tile layer (CartoDB - tidak terblocked)
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-        attribution: '© CartoDB, © OpenStreetMap contributors',
-        maxZoom: 19,
+      // Tambah tile layer (Jawg Maps - gratis tanpa API key)
+      L.tileLayer('https://{s}.tile.jawg.io/light/{z}/{x}/{y}{r}.png', {
+        attribution: '© Jawg, © OpenStreetMap contributors',
+        maxZoom: 22,
         className: 'map-tiles'
       }).addTo(mapInstance);
       
