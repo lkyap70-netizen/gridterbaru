@@ -427,6 +427,78 @@
       background-color: #334155 !important;
     }
   </style>
+
+  <!-- Search CSS -->
+  <style>
+    .map-search-wrapper {
+      position: relative;
+      margin-bottom: 0.8rem;
+    }
+    
+    .map-search-box {
+      width: 100%;
+      padding: 0.75rem 0.85rem;
+      background: #0f172a;
+      border: 1px solid #475569;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      color: #ffffff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    .map-search-box:focus {
+      border-color: #e11d48;
+    }
+    
+    .map-search-box::placeholder {
+      color: #64748b;
+    }
+    
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: #1e293b;
+      border: 1px solid #475569;
+      border-top: none;
+      border-radius: 0 0 10px 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 1001;
+      display: none;
+    }
+    
+    .search-results.active {
+      display: block;
+    }
+    
+    .search-item {
+      padding: 0.7rem 0.85rem;
+      color: #e2e8f0;
+      font-size: 0.8rem;
+      cursor: pointer;
+      border-bottom: 1px solid #334155;
+      transition: background-color 0.15s;
+    }
+    
+    .search-item:hover {
+      background-color: rgba(225, 29, 72, 0.2);
+      color: #fb7185;
+    }
+    
+    .search-item:last-child {
+      border-bottom: none;
+    }
+    
+    .search-loading {
+      padding: 0.7rem 0.85rem;
+      color: #94a3b8;
+      font-size: 0.75rem;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
 
@@ -541,7 +613,17 @@
 
         <label class="gps-check"><input type="checkbox" id="gpsOn" checked> Tampilkan keterangan GPS di pojok kanan bawah tiap foto</label>
         
-        <div class="map-hint">💡 Klik di peta untuk memilih koordinat otomatis (tidak perlu ketik manual)</div>
+        <div class="map-hint">💡 Cari lokasi atau klik di peta untuk memilih koordinat otomatis</div>
+        
+        <div class="map-search-wrapper">
+          <input 
+            type="text" 
+            id="mapSearchBox" 
+            class="map-search-box" 
+            placeholder="🔍 Cari lokasi... (contoh: Jatirogo, Surabaya, dll)"
+          />
+          <div class="search-results" id="searchResults"></div>
+        </div>
         
         <div class="gps-map-container">
           <div id="gpsMap"></div>
@@ -710,6 +792,89 @@
         updateMapInfo(lat.toFixed(6), lng.toFixed(6));
       }
     }
+    
+    // --- LOGIKA SEARCH LOKASI ---
+    let searchTimeout;
+    const searchBox = document.getElementById('mapSearchBox');
+    const searchResults = document.getElementById('searchResults');
+    
+    searchBox.addEventListener('input', function(e) {
+      clearTimeout(searchTimeout);
+      const query = e.target.value.trim();
+      
+      if (query.length < 2) {
+        searchResults.classList.remove('active');
+        return;
+      }
+      
+      searchResults.innerHTML = '<div class="search-loading">🔍 Searching...</div>';
+      searchResults.classList.add('active');
+      
+      searchTimeout = setTimeout(function() {
+        searchLocations(query);
+      }, 500);
+    });
+    
+    function searchLocations(query) {
+      // Gunakan Nominatim API (OpenStreetMap's geocoding service - gratis, no API key)
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=8`;
+      
+      fetch(url)
+        .then(response => response.json())
+        .then(data => {
+          if (data.length === 0) {
+            searchResults.innerHTML = '<div class="search-loading">Tidak ada hasil ditemukan</div>';
+            return;
+          }
+          
+          searchResults.innerHTML = '';
+          data.forEach(item => {
+            const div = document.createElement('div');
+            div.className = 'search-item';
+            div.innerHTML = `<strong>${item.name}</strong><br/><small>${item.address || item.display_name}</small>`;
+            div.addEventListener('click', function() {
+              selectSearchResult(item);
+            });
+            searchResults.appendChild(div);
+          });
+        })
+        .catch(err => {
+          console.error('Search error:', err);
+          searchResults.innerHTML = '<div class="search-loading">Error searching...</div>';
+        });
+    }
+    
+    function selectSearchResult(item) {
+      const lat = parseFloat(item.lat).toFixed(6);
+      const lng = parseFloat(item.lon).toFixed(6);
+      
+      // Update input fields
+      document.getElementById('gpsLatAll').value = lat;
+      document.getElementById('gpsLngAll').value = lng;
+      document.getElementById('gpsCoordOn').checked = true;
+      
+      // Update map dan marker
+      if (mapInstance && mapMarker) {
+        mapMarker.setLatLng([lat, lng]);
+        mapInstance.setView([lat, lng], 13);
+        updateMapInfo(lat, lng);
+      }
+      
+      // Clear search
+      searchBox.value = '';
+      searchResults.classList.remove('active');
+      
+      // Trigger event untuk update template jam
+      document.getElementById('gpsLatAll').dispatchEvent(new Event('input'));
+      document.getElementById('gpsLngAll').dispatchEvent(new Event('input'));
+    }
+    
+    // Close search results saat klik di luar
+    document.addEventListener('click', function(e) {
+      if (e.target !== searchBox && !searchResults.contains(e.target)) {
+        searchResults.classList.remove('active');
+      }
+    });
 
     // --- LOGIKA GENERATOR DOKUMENTASI ---
     const canvas = document.getElementById("outputCanvas");
